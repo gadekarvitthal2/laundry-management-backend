@@ -1,0 +1,279 @@
+/* Container for A5 paper size */
+.a5-paper-container {
+  width: 148mm; /* A5 width */
+  height: 210mm; /* A5 height */
+  margin: 10mm auto; /* Center on screen with some margin */
+  box-sizing: border-box;
+  position: relative; /* All children positioned absolutely relative to this */
+  font-family: "Arial", sans-serif; /* Use a font similar to your pre-printed text */
+  font-size: 10pt; /* Adjust font size to match pre-printed */
+  line-height: 1.2;
+  color: #000; /* Ensure text is black for printing */
+  /* Optional: Add a border for visual reference on screen, remove for print */
+  border: 1px solid #ccc;
+  overflow: hidden; /* Prevent content from spilling outside */
+  background-image: url(../../assets/image.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* Positioning for Header Data (Customer Info & Booking Details) */
+.header-data {
+  position: absolute;
+  top: 47mm;
+  left: -4mm;
+  width: 107mm;
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+}
+
+.customer-info-block {
+  width: 60%; /* Adjusted width for customer info block */
+}
+
+.customer-line {
+  display: flex;
+  margin-bottom: 2.7mm; /* ADJUST: Vertical spacing between customer lines */
+}
+
+.customer-name-line .label-to {
+  width: 10mm; /* Space for "To:" */
+  flex-shrink: 0;
+  margin-right: 2mm; /* Small gap between "To:" and name */
+}
+.customer-name-line .value {
+  flex-grow: 1;
+}
+
+/* Fine-tune positioning for the lines after "To:" relative to "To:" */
+.customer-address-line,
+.customer-mobile-line {
+  position: relative;
+  left: 12mm; /* Adjust to align with the name above */
+}
+
+.booking-details-block {
+  width: 35%; /* Adjusted width for booking details block */
+  position: absolute; /* Re-position absolutely within .header-data */
+  right: 0;
+  top: 0; /* Align with the top of customer info */
+}
+
+.booking-line {
+  display: flex;
+  justify-content: flex-end; /* Align label and value to the right */
+  margin-bottom: 3mm; /* ADJUST: Vertical spacing between booking lines */
+}
+
+.booking-details-block .label {
+  width: 30mm; /* Fixed width for labels like "Booking No.:" */
+  text-align: left; /* Align label text to left within its fixed width */
+  flex-shrink: 0;
+  margin-right: 2mm; /* Small gap between label and value */
+}
+
+.booking-details-block .value {
+  flex-grow: 1;
+  text-align: left; /* Align value text to left */
+}
+
+/* Items Table Styling */
+.items-table {
+  position: absolute;
+  top: 76mm;
+  left: 18mm;
+  width: 105mm;
+  font-size: 8pt;
+}
+
+.items-table .table-row {
+  display: flex;
+  margin-bottom: 1mm; /* ADJUST: Vertical spacing between item rows */
+}
+
+.sr-no-col {
+  width: 8mm; /* ADJUST: Width for Sr. No. column */
+  text-align: left;
+}
+
+.particulars-col {
+  width: 68mm; /* ADJUST: Width for Particulars column */
+  text-align: left;
+}
+.roll-press-col {
+  width: 20mm; /* ADJUST: Width for Roll/Press column */
+  text-align: left;
+  // font-size: 9pt; /* Adjust if needed */
+}
+
+.qty-col {
+  width: 15mm; /* ADJUST: Width for Qty column and "Nos." */
+  text-align: right;
+  font-size: 9pt; /* Adjust if needed */
+}
+
+/* Summary Section Styling */
+.total-qty-line {
+  position: absolute;
+  top: 134mm;
+  right: 108mm;
+  width: 42mm;
+  text-align: right;
+  margin: 8px 0px;
+}
+
+.summary-data {
+  position: absolute;
+  top: 136mm;
+  right: 26mm;
+  width: 42mm;
+  text-align: right;
+  margin: 4px 0px;
+  font-size: 9pt;
+}
+
+.summary-line {
+  display: flex;
+  justify-content: space-between; /* Pushes label to left, value to right */
+  margin-bottom: 2mm; /* ADJUST: Vertical spacing between summary lines */
+}
+
+.summary-line .label {
+  font-weight: normal; /* Labels are not bold on your slip */
+  text-align: left; /* Keep label text left-aligned within its space */
+}
+
+.summary-line .value {
+  flex-grow: 1;
+  text-align: right; /* Align value to the right */
+}
+
+.net-amount-line {
+  padding-top: 15pt;
+}
+
+/* NEW SECTION: Detailed Footer Info from image_2d2584.png */
+.footer-extra-info {
+  position: absolute;
+  bottom: 2mm;
+  left: 11mm;
+  width: 114mm;
+  font-size: 9pt;
+}
+
+.footer-row {
+  display: flex;
+  justify-content: space-between; /* Space elements in the row */
+  margin-bottom: 1.5mm; /* ADJUST: Vertical spacing between footer lines */
+  line-height: 1.1; /* Tighter line height for footer details */
+}
+
+.footer-mobile,
+.footer-address,
+.footer-customer-name,
+.footer-total-qty,
+.footer-steam-press {
+  width: 60%; /* Adjust width for left-aligned elements */
+  text-align: left;
+}
+
+.footer-booking-no,
+.footer-time,
+.footer-date,
+.footer-press {
+  width: 35%; /* Adjust width for right-aligned elements */
+  text-align: right;
+}
+/* Specific alignment for "Steam Press" as it's a single line */
+.footer-steam-press {
+  width: 100%;
+  text-align: right;
+}
+
+/* Action Buttons (visible on screen, hidden on print) */
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  column-gap: -32px;
+  text-align: center;
+}
+
+.action-buttons button {
+  padding: 10px 20px;
+  margin: 0 10px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  flex-direction: unset;
+  column-gap: 4px;
+}
+
+.action-buttons button:hover {
+  background-color: #0056b3;
+}
+
+/* Print specific styles */
+@media print {
+  body {
+    margin: 0;
+    padding: 0;
+    -webkit-print-color-adjust: exact; /* Ensure background colors/images print, if any */
+    color-adjust: exact;
+  }
+  .a5-paper-container {
+    margin: 0;
+    border: none;
+    box-shadow: none;
+    width: 148mm;
+    height: 210mm;
+    padding: 0;
+    overflow: hidden;
+  }
+  .action-buttons {
+    display: none; /* Hide buttons when printing */
+  }
+
+  /* REMOVE BROWSER HEADERS/FOOTERS */
+  @page {
+    margin: 0; /* Set all margins to 0 to remove browser headers/footers */
+    size: A5 portrait; /* Explicitly set page size and orientation */
+  }
+
+  /* Some browsers might need additional CSS to remove headers/footers */
+  html,
+  body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+  }
+}
+
+.back-btn {
+  background-color: #007bff;
+  border: none;
+  color: #fff;
+  padding: 0.5rem 1.2rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-weight: 500;
+         color: white;
+    display: flex;
+    column-gap: 5px;
+
+  &:hover {
+    background-color: #d6d6d6;
+    transform: translateX(-2px);
+  }
+
+  &:active {
+    background-color: #c0c0c0;
+  }
+}

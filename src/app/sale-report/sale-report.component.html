@@ -1,0 +1,74 @@
+<div class="back-btn-container">
+    <button class="back-btn" [routerLink]="['/dashboard']">← Back</button>
+</div>
+<div>
+    <h1 class="heading">Sale Report</h1>
+</div>
+<!-- <div class="filters"> -->
+<div class="bg-white rounded-lg p-6 shadow-sm mb-6 filters">
+  <button mat-button (click)="getOrders('today')">Today</button>
+  <button mat-button (click)="getOrders('weekly')">Weekly</button>
+  <button mat-button (click)="getOrders('monthly')">Monthly</button>
+  <button mat-button (click)="getOrders('quarterly')">Quarterly</button>
+  <button mat-button (click)="getOrders('yearly')">Yearly</button>
+    <!-- Search Field -->
+  <mat-form-field  class="search-field">
+    <mat-label>Search</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Search customer / service / date">
+  </mat-form-field>
+</div>
+<div class="table-container">
+
+
+
+  <!-- Table -->
+  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 full-width-table">
+
+    <!-- Index Column -->
+    <ng-container matColumnDef="index">
+      <th mat-header-cell *matHeaderCellDef>#</th>
+      <td mat-cell *matCellDef="let row; let i = index">{{ i + 1 }}</td>
+      <td mat-footer-cell *matFooterCellDef></td>
+    </ng-container>
+
+    <!-- Customer Column -->
+    <ng-container matColumnDef="customerName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Customer</th>
+      <td mat-cell *matCellDef="let row">{{ row.customerId?.fullName || '-' }}</td>
+      <td mat-footer-cell *matFooterCellDef></td>
+    </ng-container>
+
+    <!-- Service Column -->
+    <ng-container matColumnDef="serviceType">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Service</th>
+      <td mat-cell *matCellDef="let row">{{ row.serviceType }}</td>
+      <td mat-footer-cell *matFooterCellDef></td>
+    </ng-container>
+
+    <!-- Amount Column -->
+    <ng-container matColumnDef="amount">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Amount</th>
+      <td mat-cell *matCellDef="let row">{{ row.charges?.totalAmount | currency:'INR':'symbol':'1.2-2' }}</td>
+      <td mat-footer-cell *matFooterCellDef>
+        {{ getTotalAmount() | currency:'INR':'symbol':'1.2-2' }}
+      </td>
+    </ng-container>
+
+    <!-- Created At Column -->
+    <ng-container matColumnDef="createdAt">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+      <td mat-cell *matCellDef="let row">{{ row.createdAt | date:'dd-MM-yyyy' }}</td>
+      <td mat-footer-cell *matFooterCellDef></td>
+    </ng-container>
+
+    <!-- Rows -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+  </table>
+
+  <!-- Paginator -->
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+
+</div>
+

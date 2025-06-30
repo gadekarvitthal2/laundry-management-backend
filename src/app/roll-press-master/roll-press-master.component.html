@@ -1,0 +1,33 @@
+<div class="back-btn-container">
+  <button class="back-btn" [routerLink]="['/dashboard-master']">← Back</button>
+</div>
+<h2 class="heading">Roll & Press  Master</h2>
+
+<form (ngSubmit)="addRollOrPressType()">
+<select [(ngModel)]="rollOrPressType" name="rollOrPressSelect" required>
+  <option value="">Select Roll & Press Type</option>
+  <option value="roll">Roll Press</option>
+  <option value="press">Press</option>
+</select>
+  <input type="number" [(ngModel)]="price" name="price" placeholder="Price (₹)" required />
+  <button type="submit">Add</button>
+</form>
+
+<table *ngIf="rollOrPressList.length">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Roll & Press Type</th>
+      <th>Price (₹)</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of rollOrPressList; let i = index">
+      <td>{{ i + 1 }}</td>
+      <td>{{ item.rollOrPressType | titlecase }}</td>
+      <td>{{ item.price }}</td>
+      <td><button (click)="deleteRollOrPress(item._id)">Delete</button></td>
+    </tr>
+  </tbody>
+</table>

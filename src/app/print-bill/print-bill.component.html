@@ -1,0 +1,124 @@
+<div class="back-btn-container">
+  <button style="color: white;" mat-button class="back-btn" [routerLink]="['/dashboard']">Home<i
+      class="material-icons">home</i></button>
+</div>
+<div class="action-buttons bg-white rounded-lg p-6 shadow-sm mb-6">
+  <!-- Print Button -->
+  <button (click)="printBill()" class="print-button">
+    <i class="material-icons">print</i>
+    <span>Print Bill</span>
+  </button>
+
+  <!-- Download PDF Button -->
+  <button (click)="downloadPdf()" class="download-pdf-button">
+    <i class="material-icons">picture_as_pdf</i> Download PDF
+  </button>
+
+  <!-- Send on WhatsApp Button -->
+  <button (click)="sendWhatsAppMessage()" class="whatsapp-button">
+    <i class="material-icons">send</i> Send on WhatsApp
+  </button>
+
+  <!-- Copy WhatsApp Message Button -->
+  <button (click)="copyOrderMessage()" class="whatsapp-button">
+    <i class="material-icons">content_copy</i> Copy WhatsApp Message
+  </button>
+
+</div>
+<!-- Loop through each bill object -->
+<div *ngFor="let bill of billData; let i = index">
+  <div class="a5-paper-container" #billContent>
+    <!-- Header Section -->
+    <div class="header-data">
+      <div class="customer-info-block">
+        <div class="customer-line customer-name-line">
+          <span class="label-to"></span>
+          <span class="value customer-name">{{ bill.customer_info.name }}</span>
+        </div>
+        <div class="customer-line customer-address-line">
+          <span class="value customer-address-text">{{ bill.customer_info.address }}</span>
+        </div>
+        <div class="customer-line customer-mobile-line">
+          <span class="value customer-mobile-text">Mob.: {{ bill.customer_info.mobile }}</span>
+        </div>
+      </div>
+
+      <div class="booking-details-block">
+        <div class="booking-line booking-no-line">
+          <span class="label"></span>
+          <span class="value">{{ bill.booking_slip.booking_no }}</span>
+        </div>
+        <div class="booking-line booking-date-line">
+          <span class="label"></span>
+          <span class="value">{{ bill.booking_slip.booking_date }}</span>
+        </div>
+        <div class="booking-line delivery-date-line">
+          <span class="label"></span>
+          <span class="value">{{ bill.booking_slip.delivery_date }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Items Table -->
+    <div class="items-table">
+      <div *ngFor="let item of bill.items" class="table-row">
+        <span class="sr-no-col">{{ item.sr_no }}</span>
+        <span class="particulars-col">{{ item.particulars }}</span>
+        <span class="roll-press-col">
+          {{
+          "(" +
+          (
+          (item.rollorpressproduct || '').toLowerCase() === 'roll_press' ? 'Roll Press' :
+          (item.rollorpressproduct || '').toLowerCase() === 'steem_press' ? 'Steam Press' :
+          'Any'
+          ) +
+          ")"
+          }}
+        </span>
+        <span class="qty-col">{{ item.qty }} Nos.</span>
+      </div>
+    </div>
+
+    <!-- Summary -->
+    <div>
+      <div class="total-qty-line">
+        <span class="value">{{ bill.summary.total_qty }}</span>
+      </div>
+      <div class="summary-data">
+        <div class="summary-line amount-line">
+          <span class="value">{{ bill.summary.amount | currency:'INR':'symbol':'1.2-2' }}</span>
+        </div>
+        <div class="summary-line old-balance-line">
+          <span class="label">Old Balance:</span>
+          <span class="value">{{ bill.summary.old_balance | currency:'INR':'symbol':'1.2-2' }}</span>
+        </div>
+        <div class="net-amount-line">
+          <span class="value">{{ bill.summary.net_amount | currency:'INR':'symbol':'1.2-2' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-extra-info">
+      <div class="footer-row">
+        <span class="footer-mobile">{{ bill.footer_extra_info.mobile }}</span>
+        <span class="footer-booking-no">{{ bill.footer_extra_info.booking_no }}</span>
+      </div>
+      <div class="footer-row">
+        <span class="footer-address">{{ bill.footer_extra_info.address }}</span>
+        <span class="footer-time">{{ bill.footer_extra_info.time }}</span>
+      </div>
+      <div class="footer-row">
+        <span class="footer-customer-name">{{ bill.footer_extra_info.customer_name }}</span>
+        <span class="footer-date">{{ bill.footer_extra_info.date }}</span>
+      </div>
+      <div class="footer-row">
+        <span class="footer-total-qty">Total Qty: {{ bill.footer_extra_info.total_qty }}</span>
+        <span class="footer-press">Roll Press: {{ bill.footer_extra_info.roll_press }}</span>
+      </div>
+      <div class="footer-row">
+        <span class="footer-steam-press">Steam Press: {{ bill.footer_extra_info.steam_press }}</span>
+      </div>
+    </div>
+  </div>
+</div>

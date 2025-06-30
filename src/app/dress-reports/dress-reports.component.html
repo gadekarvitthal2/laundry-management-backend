@@ -1,0 +1,44 @@
+<div class="back-btn-container">
+    <button class="back-btn" [routerLink]="['/dashboard']">← Back</button>
+</div>
+<div>
+  <div>
+    <h1 class="heading">Dress Sales Reports</h1>
+  </div>
+  <div class="report-controls bg-white rounded-lg p-6 shadow-sm mb-6">
+    <button (click)="getReport('today')">Today</button>
+    <button (click)="getReport('monthly')">Monthly</button>
+    <button (click)="getReport('quarterly')">Quarterly</button>
+    <button (click)="getReport('yearly')">Yearly</button>
+    <label>
+      From: <input type="date" [(ngModel)]="startDate" placeholder="Select start date">
+    </label>
+    <label>
+      To: <input type="date" [(ngModel)]="endDate" placeholder="Select end date">
+    </label>
+    <button (click)="getReport('custom')" [disabled]="!startDate || !endDate">Apply</button>
+  </div>
+<div class="report-table-container">
+  <table class="report-table" >
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Item Name</th>
+        <th>Total Quantity</th>
+        <th>Total Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let report of reports; index as i">
+        <td>{{ i + 1 }}</td>
+        <td>{{ report._id }}</td>
+        <td>{{ report.totalQuantity }}</td>
+        <td>{{ report.totalAmount | currency:'INR' }}</td>
+      </tr>
+      <tr *ngIf="!reports.length">
+        <td colspan="4">No data available</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</div>

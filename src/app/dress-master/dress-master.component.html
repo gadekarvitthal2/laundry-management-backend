@@ -1,0 +1,29 @@
+<div class="back-btn-container">
+  <button class="back-btn" [routerLink]="['/dashboard-master']">← Back</button>
+</div>
+<h2 class="heading">Dress & Price Master</h2>
+
+<form (ngSubmit)="addDressType()">
+  <input type="text" [(ngModel)]="dressType" name="dressType" placeholder="Dress Type" required />
+  <input type="number" [(ngModel)]="price" name="price" placeholder="Price (₹)" required />
+  <button type="submit">Add</button>
+</form>
+
+<table *ngIf="dressList.length">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Dress Type</th>
+      <th>Price (₹)</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of dressList; let i = index">
+      <td>{{ i + 1 }}</td>
+      <td>{{ item.type | titlecase}}</td>
+      <td>{{ item.price }}</td>
+      <td><button (click)="deleteDress(item._id)">Delete</button></td>
+    </tr>
+  </tbody>
+</table>

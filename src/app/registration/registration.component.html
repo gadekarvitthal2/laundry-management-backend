@@ -1,0 +1,17 @@
+<div class="register-container">
+  <div class="register-box">
+    <h2 class="heading">Laundry Registration</h2>
+    <form (submit)="register(); $event.preventDefault();">
+      <input [(ngModel)]="ownerName" name="ownerName" type="text" placeholder="Owner Name" required>
+      <input [(ngModel)]="shopName" name="shopName" type="text" placeholder="Shop Name" required>
+      <input [(ngModel)]="email" name="email" type="email" placeholder="Email" required>
+      <input [(ngModel)]="phone" name="phone" type="tel" placeholder="Phone Number" required>
+      <input [(ngModel)]="shopAddress" name="shopAddress" type="text" placeholder="Shop Address" required>
+      <input [(ngModel)]="city" name="city" type="text" placeholder="City" required>
+      <input [(ngModel)]="pincode" name="pincode" type="text" placeholder="Pincode" required>
+      <input [(ngModel)]="password" name="password" type="password" placeholder="Password" required>
+      <button type="submit">Register</button>
+    </form>
+  </div>
+</div>
+

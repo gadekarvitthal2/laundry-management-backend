@@ -1,0 +1,78 @@
+
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 400px;
+  margin: auto;
+}
+
+input, button {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+select {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #218838;
+}
+
+table {
+  width: 90%;
+  margin: 20px auto;
+  border-collapse: collapse;
+  background-color: #faf9fd;
+}
+
+th, td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  form, table {
+    width: 100%;
+  }
+
+  input, button {
+    font-size: 14px;
+  }
+}
+
+.back-btn {
+  background-color: #007bff;
+  border: none;
+  color: #fff;
+  padding: 0.5rem 1.2rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-weight: 500;
+
+  &:hover {
+    background-color: #d6d6d6;
+    transform: translateX(-2px);
+  }
+
+  &:active {
+    background-color: #c0c0c0;
+  }
+}
