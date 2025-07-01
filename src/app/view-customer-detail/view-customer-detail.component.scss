@@ -18,3 +18,19 @@
     background-color: #c0c0c0;
   }
 }
+
+.delivered-row {
+  background-color: #0cec0c; /* light green */
+
+
+}
+.mat-row i {
+  cursor: pointer;
+}
+
+.delivered-row-fixed{
+    i {
+    margin: 0px 15%;
+  }
+
+}

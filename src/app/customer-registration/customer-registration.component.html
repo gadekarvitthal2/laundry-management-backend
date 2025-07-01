@@ -16,35 +16,19 @@
   <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
   <div *ngIf="successMessage" class="success">{{ successMessage }}</div>
 </form>
-<!-- <form (ngSubmit)="addDress()">
-  <input [(ngModel)]="dress.customerId" name="customerId" placeholder="Customer ID" required />
-  <select [(ngModel)]="dress.type" name="type">
-    <option value="">Select Cloth</option>
-    <option *ngFor="let item of clothList" [value]="item._id">{{item.type}}</option>
-  </select>
-  <input type="number" [(ngModel)]="dress.quantity" name="quantity" placeholder="Quantity" required />
-  <input [(ngModel)]="dress.serviceType" name="serviceType" placeholder="Service Type" required />
-  <input type="date" [(ngModel)]="dress.pickupDate" name="pickupDate" />
-  <input type="date" [(ngModel)]="dress.deliveryDate" name="deliveryDate" />
-  <input type="number" [(ngModel)]="dress.price" name="price" placeholder="Price" required />
-  <button type="submit">Add Dress</button>
-</form> -->
 
 <div class="customer-search-container mt-8">
-  <!-- <div>
-    <h2 class="heading">Select Customer</h2>
-  </div> -->
   <div class="bg-white rounded-lg p-6 shadow-sm mb-6" style="    display: flex;
     width: 90%;
     justify-content: center;
-    align-items: center;">
+    align-items: center;"> 
     <mat-form-field appearance="outline" style="width: 50%;">
       <mat-select [formControl]="customerCtrl" placeholder="Customer" (selectionChange)="onCustomerSelected($event)">
         <mat-option>
           <ngx-mat-select-search [formControl]="customerCtrl"></ngx-mat-select-search>
         </mat-option>
         <mat-option *ngFor="let customer of filteredCustomers | async" [value]="customer">
-          {{customer.fullName + ' (' + customer.phone + ')'}}
+          {{(customer.fullName | titlecase) + ' (' + customer.phone + ')'}}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -71,8 +55,9 @@
             class="form-select w-full rounded-md border border-gray-300 py-2 px-3 focus:border-indigo-500 focus:ring-indigo-500"
             required>
             <option value="">Select Service</option>
-            <option value="Dry Cleaning">Dry Cleaning</option>
-            <option value="Wash & Fold">Wash & Fold</option>
+            <option value="Wet_Cleaning">Wet Cleaning</option>
+            <option value="Dry_Cleaning">Dry Cleaning</option>
+            <option value="Wash_Fold">Wash & Fold</option>
             <option value="Ironing">Ironing</option>
           </select>
         </div>
@@ -140,8 +125,8 @@
       </div> -->
       <div class="space-y-4 mb-4">
         <div class="hidden md:grid grid-cols-12 gap-4 items-center text-sm font-medium text-gray-600 mb-2 px-2">
-          <div class="col-span-3">Product</div>
-          <div class="col-span-2">Roll/Steem Press</div>
+          <div class="col-span-4">Product</div>
+          <!-- <div class="col-span-2">Roll/Steem Press</div> -->
           <div class="col-span-2 text-center">Quantity</div>
           <div class="col-span-2 text-right">Unit Price</div>
           <div class="col-span-2 text-right">Amount</div>
@@ -152,18 +137,18 @@
           class="grid grid-cols-12 gap-4 items-center border border-gray-200 p-3 rounded-md">
 
           <!-- Product Dropdown -->
-          <div class="col-span-12 md:col-span-3">
+          <div class="col-span-12 md:col-span-4">
             <label class="block md:hidden text-xs text-gray-500 mb-0.5">Product</label>
             <select [name]="'item_type_' + i" [(ngModel)]="item.productId" (ngModelChange)="onProductChange(item)"
               class="form-select w-full rounded-md border border-gray-300 py-2 px-3 focus:border-indigo-500 focus:ring-indigo-500"
               required>
               <option [ngValue]="null">Select Cloth</option>
-              <option *ngFor="let cloth of clothList" [value]="cloth._id">{{cloth.type}}</option>
+              <option *ngFor="let cloth of clothList" [value]="cloth._id">{{cloth.type | titlecase}}</option>
             </select>
           </div>
 
           <!-- Roll/Steem Press Dropdown -->
-          <div class="col-span-12 md:col-span-2">
+          <!-- <div class="col-span-12 md:col-span-2">
             <label class="block md:hidden text-xs text-gray-500 mb-0.5">Roll/Steem Press</label>
             <select [(ngModel)]="item.rollorpressproduct" [name]="'item_service_type_' + i"
               class="form-select w-full rounded-md border border-gray-300 py-2 px-3 focus:border-indigo-500 focus:ring-indigo-500"
@@ -173,7 +158,7 @@
               <option value="roll_press">Roll Press</option>
               <option value="steem_press">Steam Press</option>
             </select> 
-          </div>
+          </div> -->
 
           <!-- Quantity Input -->
           <div class="col-span-6 md:col-span-2">
@@ -295,8 +280,8 @@
             required>
             <option *ngFor="let type of pickupTypes" [value]="type">{{type}}</option>
           </select>
-          <label for="pickupDate" class="block mt-2 mb-1 text-sm font-medium text-gray-700">Pickup Date</label>
-          <input type="date" id="pickupDate" name="pickupDate" [(ngModel)]="pickupDate"
+          <label for="bookingDate" class="block mt-2 mb-1 text-sm font-medium text-gray-700">Booking Date</label>
+          <input type="date" id="bookingDate" name="bookingDate" [(ngModel)]="bookingDate"
             class="form-input w-full rounded-md border border-gray-300 py-2 px-3 focus:border-indigo-500 focus:ring-indigo-500">
         </div>
         <div>

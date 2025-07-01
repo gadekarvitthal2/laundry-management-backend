@@ -3,6 +3,7 @@ import { DataService } from '../services/data.service';
 import { FormControl } from '@angular/forms';
 import { Observable, startWith, map } from 'rxjs';
 import { Router } from '@angular/router';
+import { position } from 'html2canvas/dist/types/css/property-descriptors/position';
 
 @Component({
   selector: 'app-customer-registration',
@@ -23,10 +24,10 @@ export class CustomerRegistrationComponent implements OnInit {
   errorMessage: string = '';
 
   customerId: string = ''; // Example value
-  serviceType: string = 'Dry Cleaning'; // Example value
+  serviceType: string = 'Wet_Cleaning'; // Example value
 
   orderItems: any[] = [];
-  pickupDate: string = new Date().toISOString().split('T')[0];
+  bookingDate: string = new Date().toISOString().split('T')[0];
   deliveryDate: string = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
     .toISOString()
     .split('T')[0];
@@ -49,11 +50,11 @@ export class CustomerRegistrationComponent implements OnInit {
 
   // List of available cloths (as in your original Angular snippet)
   clothList: any[] = [
-    { _id: '1', type: 'Top/Shirt-Silk', defaultPrice: 6.5 },
-    { _id: '2', type: 'Pants-Cotton', defaultPrice: 5.0 },
-    { _id: '3', type: 'Dress-Delicate', defaultPrice: 8.0 },
-    { _id: '4', type: 'Cardigan', defaultPrice: 5.8 },
-    { _id: '5', type: 'Other', defaultPrice: 4.0 },
+    { _id: '1', type: 'Top/Shirt-Silk', defaultPrice: 6.5, position: 1 },
+    { _id: '2', type: 'Pants-Cotton', defaultPrice: 5.0, position: 2 },
+    { _id: '3', type: 'Dress-Delicate', defaultPrice: 8.0, position: 3 },
+    { _id: '4', type: 'Cardigan', defaultPrice: 5.8, position: 4 },
+    { _id: '5', type: 'Other', defaultPrice: 4.0, position: 5 },
   ];
 
   // clothList: any[] = []; // This will be populated from the service
@@ -138,7 +139,7 @@ export class CustomerRegistrationComponent implements OnInit {
       })),
       pickupDetails: {
         type: this.selectedPickupType,
-        date: this.pickupDate,
+        date: this.bookingDate,
         charge: this.pickupCharge,
       },
       deliveryDetails: {
@@ -187,7 +188,7 @@ export class CustomerRegistrationComponent implements OnInit {
     return new Promise<void>((resolve, reject) => {
       this.dataService.getDresses().subscribe({
         next: (data: any) => {
-          this.clothList = data;
+          this.clothList = data.sort((a: any, b:any) => a.position - b.position);
           resolve(data);
         },
         error: (err) => {
@@ -301,7 +302,7 @@ export class CustomerRegistrationComponent implements OnInit {
       })),
       pickupDetails: {
         type: this.selectedPickupType,
-        date: this.pickupDate,
+        date: this.bookingDate,
         charge: this.pickupCharge,
       },
       deliveryDetails: {

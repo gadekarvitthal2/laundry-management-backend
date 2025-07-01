@@ -51,6 +51,19 @@ export class DataService {
     return this.http.delete(`${this.baseUrl}/dress-master/roll-press-master/${id}`);
   }
 
+  updateDressPositions(items: any[]): Observable<any> {
+    return this.http.post(`${this.baseUrl}/dress-master/update-positions`, items);
+  }
+
+  notifyUpdateDeliveryDate(customerId: string, deliveryNotifiedDate: string, orderId: string) {
+    return this.http.patch(
+      `${this.baseUrl}/orders/notify-update-delivery-date/customerid/${customerId}/orderid/${orderId}`,
+      { deliveryNotifiedDate }
+    );
+  }
+
+
+
 
   addDressesBulk(dresses: any[]) {
     return this.http.post('/api/dresses/bulk', dresses);
@@ -68,10 +81,10 @@ export class DataService {
     );
   }
 
-  updatePickupDateById(customerId: string, pickupDate: Date): Observable<any> {
+  updatePickupDateById(customerId: string, bookingDate: Date): Observable<any> {
     return this.http.put(
-      `${this.baseUrl}/customers/${customerId}/update-pickup-date`,
-      { pickupDate }
+      `${this.baseUrl}/customers/update-pickup-date/${customerId}`,
+      { bookingDate }
     );
   }
 

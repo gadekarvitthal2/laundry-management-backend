@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { DataService } from '../services/data.service';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-dress-master',
@@ -10,9 +11,10 @@ import { DataService } from '../services/data.service';
 export class DressMasterComponent {
   dressType = '';
   price = 0;
-
+  // items: any[] = []; // fetched from API
   dressList: any[] = [];
-
+displayedColumns: string[] = ['type'];
+displayedColumns1: string[] = ['position', 'type', 'price', 'action'];
   constructor(private dataService: DataService) {}
 
   ngOnInit(): void {
@@ -21,7 +23,11 @@ export class DressMasterComponent {
 
   loadDresses(): void {
     this.dataService.getDresses().subscribe({
-      next: (data) => this.dressList = data,
+      next: (data) => {this.dressList = data.sort((a, b) => a.position - b.position);
+        // add changing data to the dressList
+  
+      },
+
       error: (err) => console.error('Error loading dresses:', err)
     });
   }
@@ -49,4 +55,22 @@ export class DressMasterComponent {
       error: (err) => alert('Error deleting dress')
     });
   }
+
+drop(event: CdkDragDrop<string[]>) {
+  moveItemInArray(this.dressList, event.previousIndex, event.currentIndex);
+
+  // Update position field
+  const updatedItems = this.dressList.map((item, index) => ({
+    ...item,
+    position: index + 1,
+  }));
+
+   this.dressList = [...updatedItems];
+
+  // Save new positions to backend
+  this.dataService.updateDressPositions(updatedItems).subscribe({
+    next: () => console.log('Positions updated successfully'),
+    error: (err) => console.error('Error updating positions:', err)
+  });
+}
 }

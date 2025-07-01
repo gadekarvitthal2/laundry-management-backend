@@ -33,6 +33,7 @@ import { OrderSummaryComponent } from './order-summary/order-summary.component';
 import { PrintBillComponent } from './print-bill/print-bill.component';
 import { RollPressMasterComponent } from './roll-press-master/roll-press-master.component';
 import { MatSortModule } from '@angular/material/sort';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [
@@ -70,7 +71,8 @@ import { MatSortModule } from '@angular/material/sort';
     MatCardModule,
     MatNativeDateModule,
     MatDialogModule,
-    MatSortModule
+    MatSortModule,
+    DragDropModule
   ],
   providers: [AuthService, DataService],
   bootstrap: [AppComponent],
