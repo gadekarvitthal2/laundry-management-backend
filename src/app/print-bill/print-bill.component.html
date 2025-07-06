@@ -46,7 +46,7 @@
       <div class="booking-details-block">
         <div class="booking-line booking-no-line">
           <span class="label"></span>
-          <span class="value">{{ bill.booking_slip.booking_no }}</span>
+          <span class="value" class="booking_value">{{ bill.booking_slip.booking_no }}</span>
         </div>
         <div class="booking-line booking-date-line">
           <span class="label"></span>
@@ -64,7 +64,7 @@
       <div *ngFor="let item of bill.items" class="table-row">
         <span class="sr-no-col">{{ item.sr_no }}</span>
         <span class="particulars-col">{{ item.particulars }}</span>
-        <span class="roll-press-col">
+        <!-- <span class="roll-press-col">
           {{
           "(" +
           (
@@ -74,8 +74,8 @@
           ) +
           ")"
           }}
-        </span>
-        <span class="qty-col">{{ item.qty }} Nos.</span>
+        </span> -->
+        <span class="qty-col">{{ item.qty }}</span>
       </div>
     </div>
 
@@ -99,7 +99,8 @@
     </div>
 
     <!-- Footer -->
-    <div class="footer-extra-info">
+    <!-- <div class="footer-extra-info">
+
       <div class="footer-row">
         <span class="footer-mobile">{{ bill.footer_extra_info.mobile }}</span>
         <span class="footer-booking-no">{{ bill.footer_extra_info.booking_no }}</span>
@@ -118,6 +119,32 @@
       </div>
       <div class="footer-row">
         <span class="footer-steam-press">Steam Press: {{ bill.footer_extra_info.steam_press }}</span>
+      </div>
+    </div> -->
+    <div class="footer-extra-info-wrapper">
+      <!-- Left Column -->
+      <div class="footer-extra-info-col">
+        <div class="footer-row"><span class="footer-mobile">{{ bill.footer_extra_info.mobile }}</span></div>
+        <div class="footer-row"><span class="footer-customer-name">{{ bill.footer_extra_info.customer_name | titlecase }}</span>   </div>
+          <div class="footer-row"><span class="footer-address">{{ bill.footer_extra_info.address }}</span></div>
+     
+      </div>
+
+      <!-- Center Column -->
+      <div class="footer-extra-info-col center">
+        <div class="footer-row"><span class="footer-total-qty">Total Qty: {{ bill.footer_extra_info.total_qty }}</span>
+        </div>
+        <div class="footer-row"><span class="footer-press">Roll Press: {{ bill.footer_extra_info.roll_press }}</span>
+        </div>
+        <div class="footer-row"><span class="footer-steam-press">Steam Press: {{ bill.footer_extra_info.steam_press
+            }}</span></div>
+      </div>
+
+      <!-- Right Column -->
+      <div class="footer-extra-info-col right">
+        <div class="footer-row"><span class="footer-booking-no">{{ bill.footer_extra_info.booking_no }}</span></div>
+        <div class="footer-row"><span class="footer-time">{{ bill.footer_extra_info.time }}</span></div>
+        <div class="footer-row"><span class="footer-date">{{ bill.footer_extra_info.date }}</span></div>
       </div>
     </div>
   </div>

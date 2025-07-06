@@ -64,6 +64,10 @@
   display: flex;
   justify-content: flex-end; /* Align label and value to the right */
   margin-bottom: 3mm; /* ADJUST: Vertical spacing between booking lines */
+
+  .booking_value {
+    letter-spacing: 1px;
+  }
 }
 
 .booking-details-block .label {
@@ -93,7 +97,7 @@
 }
 
 .sr-no-col {
-  width: 8mm; /* ADJUST: Width for Sr. No. column */
+  width: 22mm; /* ADJUST: Width for Sr. No. column */
   text-align: left;
 }
 
@@ -154,41 +158,71 @@
 }
 
 /* NEW SECTION: Detailed Footer Info from image_2d2584.png */
-.footer-extra-info {
+// .footer-extra-info {
+//   position: absolute;
+//   bottom: 2mm;
+//   left: 11mm;
+//   width: 114mm;
+//   font-size: 9pt;
+// }
+
+// .footer-row {
+//   display: flex;
+//   justify-content: space-between; /* Space elements in the row */
+//   margin-bottom: 1.5mm; /* ADJUST: Vertical spacing between footer lines */
+//   line-height: 1.1; /* Tighter line height for footer details */
+// }
+
+// .footer-mobile,
+// .footer-address,
+// .footer-customer-name,
+// .footer-total-qty,
+// .footer-steam-press {
+//   width: 60%; /* Adjust width for left-aligned elements */
+//   text-align: left;
+// }
+
+// .footer-booking-no,
+// .footer-time,
+// .footer-date,
+// .footer-press {
+//   width: 35%; /* Adjust width for right-aligned elements */
+//   text-align: right;
+// }
+// /* Specific alignment for "Steam Press" as it's a single line */
+// .footer-steam-press {
+//   width: 100%;
+//   text-align: right;
+// }
+.footer-extra-info-wrapper {
   position: absolute;
   bottom: 2mm;
   left: 11mm;
   width: 114mm;
   font-size: 9pt;
+  display: flex;
+  justify-content: space-between;
+}
+
+.footer-extra-info-col {
+  width: 32%;
+}
+
+.footer-extra-info-col.center {
+  text-align: center;
+}
+
+.footer-extra-info-col.right {
+  text-align: right;
 }
 
 .footer-row {
-  display: flex;
-  justify-content: space-between; /* Space elements in the row */
-  margin-bottom: 1.5mm; /* ADJUST: Vertical spacing between footer lines */
-  line-height: 1.1; /* Tighter line height for footer details */
-}
+  margin-bottom: 1.5mm;
+  line-height: 1.1;
 
-.footer-mobile,
-.footer-address,
-.footer-customer-name,
-.footer-total-qty,
-.footer-steam-press {
-  width: 60%; /* Adjust width for left-aligned elements */
-  text-align: left;
-}
-
-.footer-booking-no,
-.footer-time,
-.footer-date,
-.footer-press {
-  width: 35%; /* Adjust width for right-aligned elements */
-  text-align: right;
-}
-/* Specific alignment for "Steam Press" as it's a single line */
-.footer-steam-press {
-  width: 100%;
-  text-align: right;
+  .footer-booking-no {
+    font-size: 1.2em;
+  }
 }
 
 /* Action Buttons (visible on screen, hidden on print) */
@@ -264,9 +298,9 @@
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
   font-weight: 500;
-         color: white;
-    display: flex;
-    column-gap: 5px;
+  color: white;
+  display: flex;
+  column-gap: 5px;
 
   &:hover {
     background-color: #d6d6d6;

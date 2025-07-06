@@ -19,7 +19,6 @@ export class OrderSummaryComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public data: any) {}
 
   ngOnInit(): void {
-    console.log('Order Summary Component Initialized', this.data);
     if (this.data && this.data.items) {
       this.itemList = this.data.items.map((item: any) => ({
         productName: item.productName,
@@ -31,7 +30,6 @@ export class OrderSummaryComponent implements OnInit {
   }
 
   getTotalAmount(): number {
-    console.log('Calculating total amount');
     return this.itemList.reduce((sum, item) => sum + item.totalPrice, 0);
   }
 

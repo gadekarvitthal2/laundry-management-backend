@@ -33,18 +33,19 @@ export class PrintBillComponent {
     },
   ];
   items: any[][] = [];
-
+billNumber: any;
+  customerId: any;
   constructor(
     private dataService: DataService,
     private router: ActivatedRoute
   ) {
     this.router.queryParams.subscribe((params) => {
       if (params['customerId']) {
+        this.customerId  = params['customerId'];
         this.incomingCustomerId = params['customerId'];
         this.finalOrder = params['orderData']
           ? JSON.parse(params['orderData'])
           : null;
-        console.log('Final Order:', this.finalOrder);
       }
     });
   }
@@ -190,13 +191,15 @@ export class PrintBillComponent {
       this.finalOrder.items,
       String(this.finalOrder.phoneNo)
     );
+    // console.log(this.billData[0])
+    this.deliveredMessageUpdateMessage(this.billData[0]);
   }
 
   parseApiToBillData(apiResponse: any): any[] {
     const createdAt = new Date(apiResponse.createdAt);
     const deliveryDate = new Date(apiResponse.deliveryDetails.date);
     const items = apiResponse.items;
-
+    this.billNumber = apiResponse.billNumber
     // Map base item info
     const sampleItemData = items.map((item: any, index: number) => ({
       sr_no: index + 1,
@@ -204,6 +207,7 @@ export class PrintBillComponent {
       qty: item.quantity,
       rollorpressproduct: item.rollorpressproduct,
       unitPrice: item.unitPrice,
+      // billNumber: item.billNumber,
     }));
 
     // Split into batches of 10
@@ -218,13 +222,11 @@ export class PrintBillComponent {
         0
       );
       const rollCount = batch
-        .filter((i) => i.rollorpressproduct?.toLowerCase() === 'roll_press')
+        .filter((i) => i.particulars?.toLowerCase().includes('roll'))
         .reduce((sum, i) => sum + i.qty, 0);
+
       const steamCount = batch
-        .filter((i) => i.rollorpressproduct?.toLowerCase() === 'steem_press')
-        .reduce((sum, i) => sum + i.qty, 0);
-      const normalCount = batch
-        .filter((i) => i.rollorpressproduct?.toLowerCase() === 'normal')
+        .filter((i) => i.particulars?.toLowerCase().includes('steam'))
         .reduce((sum, i) => sum + i.qty, 0);
 
       return {
@@ -262,9 +264,9 @@ export class PrintBillComponent {
           roll_press: rollCount > 0 ? rollCount : '0',
           steam_press: steamCount > 0 ? steamCount : '0',
         },
+        _id:apiResponse._id
       };
     });
-    console.log('Parsed Bills:', bills);
     return bills;
   }
 
@@ -280,9 +282,6 @@ export class PrintBillComponent {
                 new Date(b.createdAt).getTime() -
                 new Date(a.createdAt).getTime()
             )[0];
-            console.log('Latest order:', this.latestOrder);
-            // this.billData = await this.parseApiToBillData(this.latestOrder);
-            console.log('Parsed Bill Data:', this.billData);
           },
           error: (error) => {
             console.error('Error fetching bill data:', error);
@@ -303,8 +302,6 @@ export class PrintBillComponent {
                 new Date(b.createdAt).getTime() -
                 new Date(a.createdAt).getTime()
             )[0];
-            console.log('Latest order:', this.latestOrder);
-            // this.parseApiToBillData(this.latestOrder);
             resolve();
           },
           error: (error) => {
@@ -317,7 +314,6 @@ export class PrintBillComponent {
   placeOrder(): void {
     this.dataService.createOrder(this.finalOrder).subscribe({
       next: (response) => {
-        console.log('Order created successfully:', response);
         alert('Order placed successfully!');
         this.isOrderPlaced = true; // Set the flag to true after successful order placement
         // this.notifyCustomer(this.incomingCustomerId, this.finalOrder.items);
@@ -328,80 +324,159 @@ export class PrintBillComponent {
     });
   }
 
-  notifyCustomer(customerId: string, items: any[], phone: string): void {
-    let phoneNo = phone;
-    if (!customerId) {
-      alert('Customer ID is missing.');
-      return;
-    }
-    const customer = this.allConsumerList.find(
-      (consumer: any) => consumer._id === customerId
-    );
-    if (customer && customer.phone) {
-      phoneNo = customer.phone || phone;
-      console.log('Phone No:', customer.phone);
-    } else {
-      console.log('Customer not found');
-    }
-    if (!items || items.length === 0) {
-      alert('Item list is empty.');
-      return;
-    }
+notifyCustomer(customerId: string, items: any[], phone: string): void {
+  let phoneNo = phone;
+  let fullName;
+  let deliveryDate = this.finalOrder?.deliveryDetails?.date;
 
-    // Build item details message
-    let itemDetails = items
-      .map((item, index) => {
-        return `${index + 1}. ${item.productName} - Qty: ${item.quantity}, ₹${
-          item.unitPrice
-        } x ${item.quantity} = ₹${item.amount}`;
-      })
-      .join('\n');
-
-    // Calculate total amount
-    const totalAmount = items.reduce((sum, item) => sum + item.amount, 0);
-
-    // Final message
-    const message = `Your item has been Placed.\n\nOrder Summary:\n${itemDetails}\n\nTotal Amount: ₹${totalAmount}\n\nThank you!\nJay Drycleaners\nPlease visit again.`;
-
-    const encodedMessage = encodeURIComponent(message);
-    const url = `https://wa.me/91${phoneNo}?text=${encodedMessage}`;
-    window.open(url, '_blank');
+  if (!customerId) {
+    alert('Customer ID is missing.');
+    return;
   }
 
-  copyOrderMessage(): void {
-    // this.notifyCustomer(
-    //   this.incomingCustomerId,
-    //   this.finalOrder.items,
-    //   String(this.finalOrder.phoneNo)
-    // );
-    const items = this.finalOrder?.items || [];
-    const phoneNo = this.finalOrder?.phoneNo || '';
+  const customer = this.allConsumerList.find(
+    (consumer: any) => consumer._id === customerId
+  );
 
-    if (!items || items.length === 0) {
-      alert('Item list is empty.');
-      return;
-    }
-
-    // Build item details message
-    const itemDetails = items
-      .map((item: any, index: number) => {
-        return `${index + 1}. ${item.productName} - Qty: ${item.quantity}, ₹${
-          item.unitPrice
-        } x ${item.quantity} = ₹${item.amount}`;
-      })
-      .join('\n');
-
-    // Calculate total amount
-    const totalAmount = items.reduce((sum: any, item: any) => sum + item.amount, 0);
-
-    // Final message
-    const message = `Your item has been Placed.\n\nOrder Summary:\n${itemDetails}\n\nTotal Amount: ₹${totalAmount}\n\nThank you!\nJay Drycleaners\nPlease visit again.`;
-
-    navigator.clipboard.writeText(message).then(
-      () => alert('Order message copied to clipboard!'),
-      (err) => alert('Failed to copy message: ' + err)
-    );
+  if (!customer) {
+    alert('Customer not found.');
+    return;
   }
+
+  phoneNo = customer.phone || phone;
+  fullName = customer.fullName || 'Customer';
+
+  if (!items || items.length === 0) {
+    alert('Item list is empty.');
+    return;
+  }
+
+  const itemDetails = items
+    .map((item, index) => `${index + 1}. ${item.productName}   ${item.quantity}`)
+    .join('\n');
+
+  const totalAmount = items.reduce((sum, item) => sum + item.amount, 0);
+  const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
+
+  const message = 
+`*Name:* ${this.dataService.toTitleCase(fullName)}
+*Bill.No:* ${this.removeLeadingZeros(this.billNumber)}
+*B.D:* ${this.formatDateWithOptionalTime(customer.createdAt)}
+*D.D:* ${this.formatDateWithOptionalTime(deliveryDate)}
+*Your item has been Placed.*
+
+*Order Summary:*
+${itemDetails}
+------------------------
+*Total Quantity:* ${totalQuantity}
+*Total Amount:* ₹${totalAmount}/-
+
+*Thank you!*
+Jay Drycleaners
+Please visit again.`;
+
+  const encodedMessage = encodeURIComponent(message);
+  const url = `https://wa.me/91${phoneNo}?text=${encodedMessage}`;
+  window.open(url, '_blank');
+}
+
+
+formatDateWithOptionalTime(input: string): string {
+  if (!input) return '';
+
+  let date: Date;
+
+  // Check if the string includes time (T or space with colon)
+  const hasTime = /[T\s]\d{2}:\d{2}/.test(input);
+
+  if (hasTime) {
+    // If time is present, parse normally
+    date = new Date(input);
+  } else {
+    // If only date is present, parse as local date (not UTC)
+    const [year, month, day] = input.split('-').map(Number);
+    date = new Date(year, month - 1, day); // month is 0-based
+  }
+
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = String(date.getFullYear()).slice(-2);
+
+  let formattedDate = `${day}/${month}/${year}`;
+
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+
+  if (hasTime && (hours !== 0 || minutes !== 0)) {
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const displayHours = hours % 12 || 12;
+    const displayMinutes = String(minutes).padStart(2, '0');
+    formattedDate += ` ${String(displayHours).padStart(2, '0')}:${displayMinutes} ${ampm}`;
+  }
+
+  return formattedDate;
+}
+
+removeLeadingZeros(value: string): string {
+  return String(Number(value));
+}
+
+copyOrderMessage(): void {
+  const items = this.finalOrder?.items || [];
+
+  if (!items.length) {
+    alert('Item list is empty.');
+    return;
+  }
+
+  const customerId = this.finalOrder?.customerId;
+  const customer = this.allConsumerList?.find(
+    (consumer: any) => consumer._id === customerId
+  );
+
+  const fullName = customer?.fullName
+    ? this.dataService.toTitleCase(customer.fullName)
+    : 'Customer';
+
+  const billNumber = this.removeLeadingZeros(this.billNumber || '');
+  const bookingDate = this.formatDateWithOptionalTime(customer?.createdAt);
+  const deliveryDate = this.formatDateWithOptionalTime(this.finalOrder?.deliveryDetails?.date);
+  const address = customer?.address || 'No Address';
+
+  const maxNameLength = Math.max(...items.map((item: any) => item.productName.length), 12);
+
+  const itemDetails = items
+    .map((item: any, index: number) => {
+      const paddedName = item.productName.padEnd(maxNameLength + 2, ' ');
+      return `${index + 1}. ${paddedName}${item.quantity}`;
+    })
+    .join('\n');
+
+  const totalAmount = items.reduce((sum: number, item: any) => sum + item.amount, 0);
+  const totalQuantity = items.reduce((sum: number, item: any) => sum + item.quantity, 0);
+
+  const message =
+`*Name:* ${fullName}
+*Bill.No:* ${billNumber}
+*B.D:* ${bookingDate}
+*D.D:* ${deliveryDate}
+*Your item has been Placed.*
+
+*Order Summary:*
+${itemDetails}
+------------------------
+*Total Quantity:* ${totalQuantity}
+*Total Amount:* ₹${totalAmount}/-
+
+*Thank you!*
+Jay Drycleaners
+Please visit again.`;
+
+  navigator.clipboard.writeText(message).then(
+    () => alert('Message copied to clipboard!'),
+    (err) => alert('Failed to copy message: ' + err)
+  );
+}
 
   getAllCustomers() {
     return new Promise<void>((resolve, reject) => {
@@ -409,6 +484,7 @@ export class PrintBillComponent {
       this.dataService.getAllCustomers().subscribe({
         next: (data: any) => {
           this.allConsumerList = data || [];
+          console.log('this.allConsumerList',this.allConsumerList)
           resolve();
         },
         error: (err) => {
@@ -424,9 +500,8 @@ export class PrintBillComponent {
       this.dataService.getOrdersByCustomer(this.incomingCustomerId).subscribe({
         next: (response) => {
           const customerdata = response[0];
-          console.log('Customer data:', customerdata);
+          console.log('response[0]',response[0])
           this.billData = this.parseApiToBillData(customerdata);
-          console.log('Parsed Bill Data:', this.billData);
 
           resolve();
           if (customerdata) {
@@ -447,7 +522,21 @@ export class PrintBillComponent {
     for (let i = 0; i < array.length; i += batchSize) {
       result.push(array.slice(i, i + batchSize));
     }
-    console.log('Batches:', result);
     return result;
+  }
+
+    deliveredMessageUpdateMessage(element: any) {
+    this.dataService
+      .notifyUpdateDeliveryDate(
+        String(this.customerId),
+        new Date().toISOString(),
+        element._id
+      )
+      .subscribe(
+        (response) => {},
+        (error) => {
+          console.error('Error updating delivery date:', error);
+        }
+      );
   }
 }

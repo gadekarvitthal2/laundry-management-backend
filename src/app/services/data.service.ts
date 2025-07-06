@@ -18,6 +18,10 @@ export class DataService {
     return this.http.get(`${this.baseUrl}/customers/all`);
   }
 
+  getNextBillNo() {
+    return this.http.get(`${this.baseUrl}/orders/get-next-bill-no`);
+  }
+
   addDress(data: any) {
     return this.http.post(`${this.baseUrl}/dresses`, data);
   }
@@ -40,30 +44,52 @@ export class DataService {
 
   // rollOrPress
   getRollOrPressType(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/dress-master/roll-press-master`);
+    return this.http.get<any[]>(
+      `${this.baseUrl}/dress-master/roll-press-master`
+    );
   }
 
   addRollOrPressType(rollOrPress: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/dress-master/roll-press-master`, rollOrPress);
+    return this.http.post(
+      `${this.baseUrl}/dress-master/roll-press-master`,
+      rollOrPress
+    );
   }
 
   deleteRollOrPress(id: string): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/dress-master/roll-press-master/${id}`);
+    return this.http.delete(
+      `${this.baseUrl}/dress-master/roll-press-master/${id}`
+    );
   }
 
   updateDressPositions(items: any[]): Observable<any> {
-    return this.http.post(`${this.baseUrl}/dress-master/update-positions`, items);
+    return this.http.post(
+      `${this.baseUrl}/dress-master/update-positions`,
+      items
+    );
   }
 
-  notifyUpdateDeliveryDate(customerId: string, deliveryNotifiedDate: string, orderId: string) {
+  notifyUpdateDeliveryDate(
+    customerId: string,
+    deliveryNotifiedDate: string,
+    orderId: string
+  ) {
     return this.http.patch(
       `${this.baseUrl}/orders/notify-update-delivery-date/customerid/${customerId}/orderid/${orderId}`,
       { deliveryNotifiedDate }
     );
   }
 
-
-
+  notifyUpdateDeliveryDateIfOrderComplete(
+    customerId: string,
+    deliveryNotifiedDate: string,
+    orderId: string
+  ) {
+    return this.http.patch(
+      `${this.baseUrl}/orders/notify-update-delivery-complete-date/customerid/${customerId}/orderid/${orderId}`,
+      { deliveryNotifiedDate }
+    );
+  }
 
   addDressesBulk(dresses: any[]) {
     return this.http.post('/api/dresses/bulk', dresses);
@@ -124,7 +150,15 @@ export class DataService {
   uploadAndSendPdf(formdata: FormData): Observable<any[]> {
     return this.http.post<any[]>(
       `${this.baseUrl}/orders/send-pdf-and-message`,
-        formdata
+      formdata
     );
+  }
+
+  toTitleCase(str: string): string {
+    return str
+      .toLowerCase()
+      .split(' ')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
   }
 }

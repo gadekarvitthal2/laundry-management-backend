@@ -21,7 +21,7 @@
   <div class="bg-white rounded-lg p-6 shadow-sm mb-6" style="    display: flex;
     width: 90%;
     justify-content: center;
-    align-items: center;"> 
+    align-items: center;">
     <mat-form-field appearance="outline" style="width: 50%;">
       <mat-select [formControl]="customerCtrl" placeholder="Customer" (selectionChange)="onCustomerSelected($event)">
         <mat-option>
@@ -41,10 +41,10 @@
       <h2 class="text-xl font-semibold text-gray-700 mb-6">Place New Order</h2>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        <div style="display: none;">
-          <label for="customerId" class="block mb-1 text-sm font-medium text-gray-700">Customer ID<span
-              class="text-red-500">*</span></label>
-          <input type="text" id="customerId" name="customerId" [(ngModel)]="customerId"
+        <div>
+          <label for="billNumber" class="block mb-1 text-sm font-medium text-gray-700">Bill No:<span
+              class="text-red-500"></span></label>
+          <input type="text" id="billNumber" name="billNumber" [(ngModel)]="billNumber"
             class="form-input w-full rounded-md border border-gray-300 py-2 px-3 focus:border-indigo-500 focus:ring-indigo-500"
             placeholder="Enter or select customer" required>
         </div>
@@ -137,7 +137,7 @@
           class="grid grid-cols-12 gap-4 items-center border border-gray-200 p-3 rounded-md">
 
           <!-- Product Dropdown -->
-          <div class="col-span-12 md:col-span-4">
+          <!-- <div class="col-span-12 md:col-span-4">
             <label class="block md:hidden text-xs text-gray-500 mb-0.5">Product</label>
             <select [name]="'item_type_' + i" [(ngModel)]="item.productId" (ngModelChange)="onProductChange(item)"
               class="form-select w-full rounded-md border border-gray-300 py-2 px-3 focus:border-indigo-500 focus:ring-indigo-500"
@@ -145,6 +145,18 @@
               <option [ngValue]="null">Select Cloth</option>
               <option *ngFor="let cloth of clothList" [value]="cloth._id">{{cloth.type | titlecase}}</option>
             </select>
+          </div> -->
+          <div class="col-span-12 md:col-span-4">
+            <!-- <div class="col-12 col-md-4 mb-2"> -->
+              <label class="form-label d-md-none text-muted small">Product</label>
+              <select class="form-select" [name]="'item_type_' + i" [(ngModel)]="item.productId"
+                (ngModelChange)="onProductChange(item)" required>
+                <option [ngValue]="null">Select Cloth</option>
+                <option *ngFor="let cloth of clothList" [value]="cloth._id">
+                  {{ cloth.type | titlecase }}
+                </option>
+              </select>
+            <!-- </div> -->
           </div>
 
           <!-- Roll/Steem Press Dropdown -->
@@ -242,7 +254,8 @@
           <span class="text-gray-600">Old Amount</span>
           <div class="relative w-32">
             <span class="absolute left-3 top-9 -translate-y-1/2 text-gray-500">₹</span>
-            <input type="text" id="taxAmount" [(ngModel)]="taxAmount" name="taxAmount" (ngModelChange)="calculateAllTotals()"
+            <input type="text" id="taxAmount" [(ngModel)]="taxAmount" name="taxAmount"
+              (ngModelChange)="calculateAllTotals()"
               class="form-input w-full rounded-md border border-gray-300 py-2 px-3 pl-7 text-right bg-gray-100">
           </div>
         </div>

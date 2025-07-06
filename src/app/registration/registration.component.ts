@@ -37,7 +37,6 @@ export class RegistrationComponent {
     };
     this.authService.register(registrationData).subscribe({
       next: (response) => {
-        console.log('Registration successful:', response);
       },
       error: (error) => {
         console.error('Registration error:', error);

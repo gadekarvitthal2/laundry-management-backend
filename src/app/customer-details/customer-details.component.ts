@@ -29,7 +29,7 @@ export class CustomerDetailsComponent implements OnInit {
     'bookingDate',
     // 'Amount',
     'placeOrderAt',
-    'notifyCustomer',
+    // 'notifyCustomer',
     'actions',
   ];
 
@@ -56,7 +56,6 @@ export class CustomerDetailsComponent implements OnInit {
       this.dataService.getAllCustomers().subscribe(
         (data: any) => {
           this.customers = data;
-          console.log('Fetched customer data:', this.customers);
           this.dataSource = new MatTableDataSource(this.customers);
           this.dataSource.paginator = this.paginator;
           resolve();
@@ -73,7 +72,6 @@ export class CustomerDetailsComponent implements OnInit {
     return new Promise<void>((resolve, reject) => {
       this.dataService.updateOrderInfo().subscribe({
         next: (response) => {
-          console.log('Order info updated successfully:', response);
           resolve();
         },
         error: (error) => {
@@ -85,18 +83,8 @@ export class CustomerDetailsComponent implements OnInit {
   }
 
   deliverOrder(customerId: string, phone: string) {
-    // Logic to deliver an order for the selected customer
-    // this.dataService.updatePickupDateById(customerId, new Date()).subscribe({
-    //   next: (response) => {
-    //     console.log('Order delivered successfully:', response);
-    //     // Optionally, refresh the customer list or show a success message
     this.getAllCustomers();
     this.notifyCustomer(phone);
-    //   },
-    //   error: (error) => {
-    //     console.error('Error delivering order:', error);
-    //   },
-    // });
   }
 
   notifyCustomer(phoneNo: string): void {

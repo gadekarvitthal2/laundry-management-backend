@@ -116,3 +116,30 @@
     flex-direction: column;
 }
 
+
+.uniform-field {
+  height: 42px; // Match height of inputs
+
+  ::ng-deep .mat-form-field-flex {
+    height: 42px;
+    padding: 0 12px;
+    align-items: center;
+    background-color: white;
+  }
+
+  ::ng-deep .mat-form-field-infix {
+    padding: 0;
+  }
+
+  ::ng-deep .mat-select-value {
+    margin-top: -2px; // Adjust for vertical alignment
+  }
+
+  ::ng-deep .mat-form-field-label {
+    top: -9px !important;
+  }
+
+  ::ng-deep .mat-form-field-wrapper {
+    padding: 0;
+  }
+}

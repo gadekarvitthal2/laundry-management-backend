@@ -45,6 +45,7 @@ export class CustomerRegistrationComponent implements OnInit {
   customerSearch = '';
   showDropdown = false;
   incomingCustomerIdFromReports: string = '';
+  billNumber: string = '';
 
   TAX_RATE = 0; // 7.25%
 
@@ -81,6 +82,8 @@ export class CustomerRegistrationComponent implements OnInit {
     this.addInitialItems();
     this.calculateAllTotals();
     await this.getAllCustomers();
+    await this.nextBillNumber();
+
     // Initialize filtered list with all customers first
     this.filteredCustomers = this.customerCtrl.valueChanges.pipe(
       startWith(''),
@@ -128,7 +131,6 @@ export class CustomerRegistrationComponent implements OnInit {
       );
       return;
     }
-    console.log('Form submitted with order items:', this.customerId);
 
     const finalOrder = {
       customerId: this.customerId,
@@ -151,13 +153,11 @@ export class CustomerRegistrationComponent implements OnInit {
         subtotal: this.subtotal,
         taxAmount: this.taxAmount,
         totalAmount: this.totalAmount,
-      },
+      }
     };
 
-    console.log('Final order to be submitted:', finalOrder);
     this.dataService.createOrder(finalOrder).subscribe({
       next: (response) => {
-        console.log('Order created successfully:', response);
         this.successMessage = 'Order placed successfully!';
         alert('Order placed successfully!');
 
@@ -188,7 +188,9 @@ export class CustomerRegistrationComponent implements OnInit {
     return new Promise<void>((resolve, reject) => {
       this.dataService.getDresses().subscribe({
         next: (data: any) => {
-          this.clothList = data.sort((a: any, b:any) => a.position - b.position);
+          this.clothList = data.sort(
+            (a: any, b: any) => a.position - b.position
+          );
           resolve(data);
         },
         error: (err) => {
@@ -324,7 +326,6 @@ export class CustomerRegistrationComponent implements OnInit {
     // this.onSubmit(); // Call the form submission handler
     this.dataService.createOrder(finalOrder).subscribe({
       next: (response) => {
-        console.log('Order created successfully:', response);
         alert('Order placed successfully!');
         // this.isOrderPlaced = true; // Set the flag to true after successful order placement
         // this.notifyCustomer(this.incomingCustomerId, this.finalOrder.items);
@@ -357,7 +358,6 @@ export class CustomerRegistrationComponent implements OnInit {
     );
     if (customer && customer.phone) {
       phoneNo = customer.phone || '';
-      console.log('Phone No:', customer.phone);
     } else {
       console.log('Customer not found');
     }
@@ -369,9 +369,8 @@ export class CustomerRegistrationComponent implements OnInit {
     // Build item details message
     let itemDetails = items
       .map((item, index) => {
-        return `${index + 1}. ${item.productName} - Qty: ${item.quantity}, ₹${
-          item.unitPrice
-        } x ${item.quantity} = ₹${item.amount}`;
+        return `${index + 1}. ${item.productName}  ${item.quantity}, 
+          ${item.quantity}`;
       })
       .join('\n');
 
@@ -384,5 +383,20 @@ export class CustomerRegistrationComponent implements OnInit {
     const encodedMessage = encodeURIComponent(message);
     const url = `https://wa.me/91${phoneNo}?text=${encodedMessage}`;
     window.open(url, '_blank');
+  }
+
+  nextBillNumber() {
+    return new Promise<string>((resolve, reject) => {
+      this.dataService.getNextBillNo().subscribe({
+        next: (res: any) => {
+          this.billNumber = res.billNumber;
+          resolve(res.billNumber);
+        },
+        error: (err) => {
+          console.error('Error fetching bill number', err);
+          reject(err);
+        },
+      });
+    });
   }
 }
