@@ -1,13 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../envitoments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DataService {
-  // private baseUrl = 'http://localhost:5000/api';
-  private baseUrl = 'https://laundry-management-cfnd.onrender.com/api';
+  // private baseUrl1 = 'http://localhost:5000/api';
+  // private baseUrl = 'https://laundry-management-cfnd.onrender.com/api';
+  private baseUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
