@@ -8,8 +8,8 @@ import { environment } from '../envitoments/environment';
 })
 export class DataService {
   // private baseUrl1 = 'http://localhost:5000/api';
-  // private baseUrl = 'https://laundry-management-cfnd.onrender.com/api';
-  private baseUrl = environment.apiUrl;
+  private baseUrl = 'https://laundry-management-cfnd.onrender.com/api';
+  // private baseUrl = environment.production;
 
   constructor(private http: HttpClient) {}
 
