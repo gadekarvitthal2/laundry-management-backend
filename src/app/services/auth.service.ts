@@ -9,7 +9,7 @@ import { environment } from '../envitoments/environment';
 export class AuthService {
   // private baseUrl = 'http://localhost:5000/api/auth';
   // private baseUrl = environment.apiUrl;
-  private baseUrl = 'https://laundry-management-cfnd.onrender.com/api';
+  private baseUrl = 'https://laundry-management-cfnd.onrender.com/api/auth';
 
 
   constructor(private http: HttpClient) {}
