@@ -33,7 +33,7 @@
       <div class="customer-info-block">
         <div class="customer-line customer-name-line">
           <span class="label-to"></span>
-          <span class="value customer-name">{{ bill.customer_info.name }}</span>
+          <span class="value customer-name">{{ bill.customer_info.name | uppercase }}</span>
         </div>
         <div class="customer-line customer-address-line">
           <span class="value customer-address-text">{{ bill.customer_info.address }}</span>

@@ -92,14 +92,14 @@ export class CustomerDetailsComponent implements OnInit {
       alert('Phone number is missing.');
       return;
     }
-    const message = `Your item has been delivered.\n\nThank you!\nJay Drycleaners\nPlease visit again.`;
+    const message = `Your Order has been delivered.\n\nThank you!\nJay Drycleaners\nPlease visit again.`;
     const encodedMessage = encodeURIComponent(message);
     const url = `https://wa.me/91${phoneNo}?text=${encodedMessage}`; // Add country code explicitly
     window.open(url, '_blank');
   }
 
   copyDeliveryMessage(): void {
-    const message = `Your item has been delivered.\n\nThank you!\nJay Drycleaners\nPlease visit again.`;
+    const message = `Your order has been delivered.\n\nThank you!\nJay Drycleaners\nPlease visit again.`;
 
     navigator.clipboard.writeText(message).then(
       () => alert('Message copied to clipboard!'),

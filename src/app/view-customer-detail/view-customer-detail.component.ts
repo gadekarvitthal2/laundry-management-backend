@@ -159,11 +159,11 @@ notifyCustomer(customerId: string, element?: any, phone?: string): void {
     0
   );
 
-  const message = `*Name:* ${fullName}
+  const message = `*Name:* ${fullName.toLocaleUpperCase()}
 *Bill.No:* ${billNumber}
 *B.D:* ${bookingDate}
 *D.D:* ${deliveryDate}
-*Your item has been Placed.*
+*Your order has been Placed.*
 
 *Order Summary:*
 ${itemDetails}
@@ -304,11 +304,11 @@ Please visit again.`;
       0
     );
 
-    return `*Name:* ${fullName}
+    return `*Name:* ${fullName.toLocaleUpperCase()}
 *Bill.No:* ${billNumber}
 *B.D:* ${bookingDate}
 *D.D:* ${deliveryDate}
-*Your item has been Placed.*
+*Your order has been Placed.*
 
 *Order Summary:*
 ${itemDetails}
@@ -352,7 +352,7 @@ Please visit again.`;
       alert('Phone number is missing.');
       return;
     }
-    const message = `*Your item has been delivered.*\n\nThank you!\nJay Drycleaners\nPlease visit again.`;
+    const message = `*Your order has been delivered.*\n\nThank you!\nJay Drycleaners\nPlease visit again.`;
     const encodedMessage = encodeURIComponent(message);
     const url = `https://wa.me/91${phoneNo}?text=${encodedMessage}`; // Add country code explicitly
     window.open(url, '_blank');

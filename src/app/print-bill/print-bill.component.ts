@@ -359,11 +359,11 @@ notifyCustomer(customerId: string, items: any[], phone: string): void {
   const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
 
   const message = 
-`*Name:* ${this.dataService.toTitleCase(fullName)}
+`*Name:* ${fullName.toLocaleUpperCase()}
 *Bill.No:* ${this.removeLeadingZeros(this.billNumber)}
 *B.D:* ${this.formatDateWithOptionalTime(customer.createdAt)}
 *D.D:* ${this.formatDateWithOptionalTime(deliveryDate)}
-*Your item has been Placed.*
+*Your order has been Placed.*
 
 *Order Summary:*
 ${itemDetails}
@@ -456,11 +456,11 @@ copyOrderMessage(): void {
   const totalQuantity = items.reduce((sum: number, item: any) => sum + item.quantity, 0);
 
   const message =
-`*Name:* ${fullName}
+`*Name:* ${fullName.toLocaleUpperCase()}
 *Bill.No:* ${billNumber}
 *B.D:* ${bookingDate}
 *D.D:* ${deliveryDate}
-*Your item has been Placed.*
+*Your order has been Placed.*
 
 *Order Summary:*
 ${itemDetails}

@@ -378,7 +378,7 @@ export class CustomerRegistrationComponent implements OnInit {
     const totalAmount = items.reduce((sum, item) => sum + item.amount, 0);
 
     // Final message
-    const message = `Your item has been Placed.\n\nOrder Summary:\n${itemDetails}\n\nTotal Amount: ₹${totalAmount}\n\nThank you!\nJay Drycleaners\nPlease visit again.`;
+    const message = `Your order has been Placed.\n\nOrder Summary:\n${itemDetails}\n\nTotal Amount: ₹${totalAmount}\n\nThank you!\nJay Drycleaners\nPlease visit again.`;
 
     const encodedMessage = encodeURIComponent(message);
     const url = `https://wa.me/91${phoneNo}?text=${encodedMessage}`;
