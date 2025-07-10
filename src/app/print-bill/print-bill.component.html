@@ -1,29 +1,42 @@
-<div class="back-btn-container">
-  <button style="color: white;" mat-button class="back-btn" [routerLink]="['/dashboard']">Home<i
-      class="material-icons">home</i></button>
-</div>
-<div class="action-buttons bg-white rounded-lg p-6 shadow-sm mb-6">
-  <!-- Print Button -->
-  <button (click)="printBill()" class="print-button">
-    <i class="material-icons">print</i>
-    <span>Print Bill</span>
-  </button>
+<div class="bg-blue-50 p-4" style="background-color: #E6F0FA;">
+  <!-- Back Button -->
+  <div class="back-btn-container max-w-4xl mx-auto mb-6">
+    <button class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all duration-300" [routerLink]="['/dashboard']">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+      </svg>
+      Back to Dashboard
+    </button>
+  </div>
 
-  <!-- Download PDF Button -->
-  <button (click)="downloadPdf()" class="download-pdf-button">
-    <i class="material-icons">picture_as_pdf</i> Download PDF
-  </button>
+  <!-- Action Buttons -->
+  <div class="action-buttons max-w-4xl mx-auto bg-white rounded-lg p-6 shadow-md">
+    <div class="flex flex-col md:flex-row gap-3 items-center">
+      <!-- Print Button -->
+      <button (click)="printBill()" class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all duration-300">
+        <i class="material-icons mr-2">print</i>
+        <span>Print Bill</span>
+      </button>
 
-  <!-- Send on WhatsApp Button -->
-  <button (click)="sendWhatsAppMessage()" class="whatsapp-button">
-    <i class="material-icons">send</i> Send on WhatsApp
-  </button>
+      <!-- Download PDF Button -->
+      <button (click)="downloadPdf()" class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all duration-300">
+        <i class="material-icons mr-2">picture_as_pdf</i>
+        <span>Download PDF</span>
+      </button>
 
-  <!-- Copy WhatsApp Message Button -->
-  <button (click)="copyOrderMessage()" class="whatsapp-button">
-    <i class="material-icons">content_copy</i> Copy WhatsApp Message
-  </button>
+      <!-- Send on WhatsApp Button -->
+      <button (click)="sendWhatsAppMessage()" class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all duration-300">
+        <i class="material-icons mr-2">send</i>
+        <span>Send on WhatsApp</span>
+      </button>
 
+      <!-- Copy WhatsApp Message Button -->
+      <button (click)="copyOrderMessage()" class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all duration-300">
+        <i class="material-icons mr-2">content_copy</i>
+        <span>Copy WhatsApp Message</span>
+      </button>
+    </div>
+  </div>
 </div>
 <!-- Loop through each bill object -->
 <div *ngFor="let bill of billData; let i = index">

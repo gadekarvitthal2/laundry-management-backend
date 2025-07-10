@@ -36,3 +36,60 @@
   }
 
 }
+
+.orders-table-container {
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+.table-responsive {
+  overflow-x: auto;
+  width: 100%;
+}
+
+.mat-table-responsive {
+  min-width: 900px; // force horizontal scroll on small devices
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  white-space: nowrap;
+  padding: 8px 12px;
+}
+
+button.mat-button i.material-icons,
+.material-icons {
+  font-size: 20px;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+/* Row coloring (optional, for better mobile UX) */
+.delivered-row {
+  background-color: #e0f7fa;
+}
+
+.order-completed {
+  background-color: #d0f0c0;
+}
+
+/* Mobile tweaks */
+@media (max-width: 768px) {
+  .mat-table-responsive {
+    font-size: 14px;
+  }
+
+  .material-icons {
+    font-size: 18px;
+  }
+
+  button.mat-button {
+    padding: 4px 8px;
+  }
+}
+
+.text-center {
+  text-align: center;
+}
+

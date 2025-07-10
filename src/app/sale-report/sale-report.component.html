@@ -1,74 +1,75 @@
-<div class="back-btn-container">
-    <button class="back-btn" [routerLink]="['/dashboard']">← Back</button>
+<div class="min-h-screen bg-blue-50 text-gray-800" style="background-color: #E6F0FA;">
+  <!-- Back Button -->
+  <div class="p-4">
+    <button class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all duration-300" [routerLink]="['/dashboard']">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+      </svg>
+      Back to Dashboard
+    </button>
+  </div>
+
+  <!-- Heading -->
+  <div class="max-w-6xl mx-auto px-4">
+    <h1 class="text-2xl font-bold text-gray-900 text-center mb-6">Sale Report</h1>
+
+    <!-- Filters -->
+    <div class="bg-white rounded-lg shadow-md p-4 mb-6">
+      <div class="flex flex-wrap gap-2 justify-center md:justify-start items-center">
+        <button class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all duration-300" (click)="getOrders('today')">Today</button>
+        <button class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all duration-300" (click)="getOrders('weekly')">Weekly</button>
+        <button class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all duration-300" (click)="getOrders('monthly')">Monthly</button>
+        <button class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all duration-300" (click)="getOrders('quarterly')">Quarterly</button>
+        <button class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all duration-300" (click)="getOrders('yearly')">Yearly</button>
+        <mat-form-field class="flex-grow min-w-[200px] max-w-sm">
+          <mat-label class="text-sm text-gray-700">Search</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="Search customer / service" class="text-sm">
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- Table Container -->
+    <div class="table-container bg-white rounded-lg shadow-md p-4 overflow-x-auto">
+      <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 w-full min-w-[600px]">
+        <!-- Columns (as-is, no changes needed) -->
+        <ng-container matColumnDef="index">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="p-2 text-sm font-semibold text-gray-700">#</th>
+          <td mat-cell *matCellDef="let row; let i = index" class="p-2 text-sm">{{ i + 1 }}</td>
+          <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+
+        <ng-container matColumnDef="customerName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="p-2 text-sm font-semibold text-gray-700">Customer</th>
+          <td mat-cell *matCellDef="let row" class="p-2 text-sm">{{ row.customerId?.fullName || '-' }}</td>
+          <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+
+        <ng-container matColumnDef="serviceType">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="p-2 text-sm font-semibold text-gray-700">Service</th>
+          <td mat-cell *matCellDef="let row" class="p-2 text-sm">{{ row.serviceType }}</td>
+          <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+
+        <ng-container matColumnDef="amount">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="p-2 text-sm font-semibold text-gray-700">Amount</th>
+          <td mat-cell *matCellDef="let row" class="p-2 text-sm">{{ row.charges?.totalAmount | currency:'INR':'symbol':'1.2-2' }}</td>
+          <td mat-footer-cell *matFooterCellDef class="p-2 text-sm font-semibold text-gray-900">
+            {{ getTotalAmount() | currency:'INR':'symbol':'1.2-2' }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="createdAt">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="p-2 text-sm font-semibold text-gray-700">Date</th>
+          <td mat-cell *matCellDef="let row" class="p-2 text-sm">{{ row.createdAt | date:'dd-MM-yyyy' }}</td>
+          <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns" class="bg-gray-100"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="hover:bg-gray-50 transition duration-200"></tr>
+        <tr mat-footer-row *matFooterRowDef="displayedColumns" class="bg-gray-100"></tr>
+      </table>
+
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons class="mt-4"></mat-paginator>
+    </div>
+  </div>
 </div>
-<div>
-    <h1 class="heading">Sale Report</h1>
-</div>
-<!-- <div class="filters"> -->
-<div class="bg-white rounded-lg p-6 shadow-sm mb-6 filters">
-  <button mat-button (click)="getOrders('today')">Today</button>
-  <button mat-button (click)="getOrders('weekly')">Weekly</button>
-  <button mat-button (click)="getOrders('monthly')">Monthly</button>
-  <button mat-button (click)="getOrders('quarterly')">Quarterly</button>
-  <button mat-button (click)="getOrders('yearly')">Yearly</button>
-    <!-- Search Field -->
-  <mat-form-field  class="search-field">
-    <mat-label>Search</mat-label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="Search customer / service / date">
-  </mat-form-field>
-</div>
-<div class="table-container">
-
-
-
-  <!-- Table -->
-  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 full-width-table">
-
-    <!-- Index Column -->
-    <ng-container matColumnDef="index">
-      <th mat-header-cell *matHeaderCellDef>#</th>
-      <td mat-cell *matCellDef="let row; let i = index">{{ i + 1 }}</td>
-      <td mat-footer-cell *matFooterCellDef></td>
-    </ng-container>
-
-    <!-- Customer Column -->
-    <ng-container matColumnDef="customerName">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Customer</th>
-      <td mat-cell *matCellDef="let row">{{ row.customerId?.fullName || '-' }}</td>
-      <td mat-footer-cell *matFooterCellDef></td>
-    </ng-container>
-
-    <!-- Service Column -->
-    <ng-container matColumnDef="serviceType">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Service</th>
-      <td mat-cell *matCellDef="let row">{{ row.serviceType }}</td>
-      <td mat-footer-cell *matFooterCellDef></td>
-    </ng-container>
-
-    <!-- Amount Column -->
-    <ng-container matColumnDef="amount">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Amount</th>
-      <td mat-cell *matCellDef="let row">{{ row.charges?.totalAmount | currency:'INR':'symbol':'1.2-2' }}</td>
-      <td mat-footer-cell *matFooterCellDef>
-        {{ getTotalAmount() | currency:'INR':'symbol':'1.2-2' }}
-      </td>
-    </ng-container>
-
-    <!-- Created At Column -->
-    <ng-container matColumnDef="createdAt">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
-      <td mat-cell *matCellDef="let row">{{ row.createdAt | date:'dd-MM-yyyy' }}</td>
-      <td mat-footer-cell *matFooterCellDef></td>
-    </ng-container>
-
-    <!-- Rows -->
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
-  </table>
-
-  <!-- Paginator -->
-  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
-
-</div>
-

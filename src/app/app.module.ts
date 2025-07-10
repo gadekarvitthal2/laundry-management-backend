@@ -34,6 +34,7 @@ import { PrintBillComponent } from './print-bill/print-bill.component';
 import { RollPressMasterComponent } from './roll-press-master/roll-press-master.component';
 import { MatSortModule } from '@angular/material/sort';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { UpdateCustomerComponent } from './update-customer/update-customer.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     ViewCustomerDetailComponent,
     OrderSummaryComponent,
     PrintBillComponent,
-    RollPressMasterComponent
+    RollPressMasterComponent,
+    UpdateCustomerComponent
   ],
   imports: [
     BrowserModule,

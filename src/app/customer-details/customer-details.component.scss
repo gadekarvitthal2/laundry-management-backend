@@ -19,9 +19,66 @@
   }
 }
 
-.full-width {
-    width: 35%;
-    max-width: 700px;
-    margin: 16px auto;
-    display: block;
+// .full-width {
+//     width: 35%;
+//     max-width: 700px;
+//     margin: 16px auto;
+//     display: block;
+// }
+
+.customer-table-container {
+  padding: 0 16px;
+
+  .filters {
+    margin-bottom: 16px;
+  }
+
+  .full-width {
+    width: 100%;
+  }
+
+  .table-responsive {
+    overflow-x: auto;
+    width: 100%;
+  }
+
+  table {
+    width: 100%;
+    min-width: 800px; // forces scroll on small screens
+    border-collapse: collapse;
+  }
+
+  th, td {
+    white-space: nowrap;
+  }
+
+  button.mat-button i.material-icons {
+    font-size: 20px;
+  }
+
+  @media (max-width: 768px) {
+    .filters {
+      padding: 12px;
+    }
+
+    mat-form-field {
+      width: 100%;
+    }
+
+    table {
+      font-size: 14px;
+    }
+
+    button.mat-button {
+      padding: 4px 8px;
+    }
+
+    .mat-paginator {
+      font-size: 13px;
+    }
+  }
+}
+
+.text-center {
+  text-align: center;
 }

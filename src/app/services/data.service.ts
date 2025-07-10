@@ -7,7 +7,7 @@ import { environment } from '../envitoments/environment';
   providedIn: 'root',
 })
 export class DataService {
-  // private baseUrl1 = 'http://localhost:5000/api';
+  // private baseUrl = 'http://localhost:5000/api';
   private baseUrl = 'https://laundry-management-cfnd.onrender.com/api';
   // private baseUrl = environment.production;
 
@@ -164,4 +164,13 @@ export class DataService {
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(' ');
   }
+
+  updateCustomer(customerId: string, data: any) {
+    return this.http.put(`${this.baseUrl}/customers/update-customer/${customerId}`, data);
+  }
+
+  deleteCustomerById(customerId: string) {
+    return this.http.delete(`${this.baseUrl}/customers/delete-customer/${customerId}`);
+  }
+
 }

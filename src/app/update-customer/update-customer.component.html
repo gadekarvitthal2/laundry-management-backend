@@ -1,0 +1,25 @@
+<h1 class="heading">Customer Update</h1>
+<form class="customer-form" (ngSubmit)="updateCustomer()" #form="ngForm">
+  <div class="form-group">
+    <label for="fullName">Full Name</label>
+    <input id="fullName" [(ngModel)]="customer.fullName" name="fullName" placeholder="Full Name" required />
+  </div>
+
+  <div class="form-group">
+    <label for="phone">Phone</label>
+    <input id="phone" [(ngModel)]="customer.phone" name="phone" placeholder="Phone" required />
+  </div>
+
+  <div class="form-group">
+    <label for="address">Address</label>
+    <input id="address" [(ngModel)]="customer.address" name="address" placeholder="Address" required />
+  </div>
+
+  <div class="form-actions">
+    <button mat-button type="submit">Update</button>
+  </div>
+
+  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+  <div *ngIf="successMessage" class="success">{{ successMessage }}</div>
+</form>
+

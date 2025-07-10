@@ -1,26 +1,35 @@
+<div class="label-container">
+  <div class="animated-label">Jay Drycleaners</div>
+</div>
+
 <div class="dashboard-container">
-  <div class="dashboard-card" [routerLink]="'/dashboard-master'">
-    <h3>Master</h3>
-    <p>Manage master data</p>
+  <div class="dashboard-card master" [routerLink]="'/dashboard-master'">
+    <div class="icon-container"><i class="material-icons">settings</i></div>
+    <h3>Master Setup</h3>
+    <p>Configure product types, pricing, and cloth categories.</p>
   </div>
 
-  <div class="dashboard-card" [routerLink]="'/sale-report'">
-    <h3>Sales</h3>
-    <p>View and manage sales</p>
+  <div class="dashboard-card sales" [routerLink]="'/sale-report'">
+    <div class="icon-container"><i class="material-icons">bar_chart</i></div>
+    <h3>Sales Reports</h3>
+    <p>Track your revenue, order count, and trends.</p>
   </div>
 
-  <div class="dashboard-card" [routerLink]="'/customer-details'">
+  <div class="dashboard-card customer" [routerLink]="'/customer-details'">
+    <div class="icon-container"><i class="material-icons">groups</i></div>
     <h3>Customer Reports</h3>
-    <p>Customer information</p>
+    <p>Manage customer data and visit history.</p>
   </div>
 
-  <div class="dashboard-card" [routerLink]="'/customer-registration'">
-    <h3>New Customer</h3>
-    <p>New Customer Registration and place orders</p>
+  <div class="dashboard-card new" [routerLink]="'/customer-registration'">
+    <div class="icon-container"><i class="material-icons">person_add</i></div>
+    <h3>Register Customer</h3>
+    <p>Quickly register new customers and place orders.</p>
   </div>
 
-  <div class="dashboard-card" [routerLink]="'/dress-report'">
+  <div class="dashboard-card dress" [routerLink]="'/dress-report'">
+    <div class="icon-container"><i class="material-icons">checkroom</i></div>
     <h3>Dress Reports</h3>
-    <p>View and manage dress reports</p>
+    <p>Monitor dress types, prices, and cleaning status.</p>
   </div>
 </div>

@@ -1,328 +1,203 @@
-<div class="back-btn-container" style="position: absolute;">
-  <button class="back-btn" [routerLink]="['/dashboard']">← Back</button>
-</div>
-
-<h1 class="heading">Customer Registration</h1>
-<form class="customer-form" (ngSubmit)="register()">
-  <input [(ngModel)]="customer.fullName" name="fullName" placeholder="Full Name" required />
-  <!-- <input [(ngModel)]="customer.email" name="email" placeholder="Email" /> -->
-  <input [(ngModel)]="customer.phone" name="phone" placeholder="Phone" required />
-  <input [(ngModel)]="customer.address" name="address" placeholder="Address" required />
-  <select [(ngModel)]="customer.pickupPreference" name="pickupPreference">
-    <option value="Home">Home</option>
-    <option value="Shop">Shop</option>
-  </select>
-  <button type="submit">Register</button>
-  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
-  <div *ngIf="successMessage" class="success">{{ successMessage }}</div>
-</form>
-
-<div class="customer-search-container mt-8">
-  <div class="bg-white rounded-lg p-6 shadow-sm mb-6" style="    display: flex;
-    width: 90%;
-    justify-content: center;
-    align-items: center;">
-    <mat-form-field appearance="outline" style="width: 50%;">
-      <mat-select [formControl]="customerCtrl" placeholder="Customer" (selectionChange)="onCustomerSelected($event)">
-        <mat-option>
-          <ngx-mat-select-search [formControl]="customerCtrl"></ngx-mat-select-search>
-        </mat-option>
-        <mat-option *ngFor="let customer of filteredCustomers | async" [value]="customer">
-          {{(customer.fullName | titlecase) + ' (' + customer.phone + ')'}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+<div class="min-h-screen flex flex-col">
+  <!-- Back Button -->
+  <div class="p-4">
+    <button class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all duration-300" [routerLink]="['/dashboard']">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+      </svg>
+      Back to Dashboard
+    </button>
   </div>
-</div>
-<div class="max-w-4xl mx-auto p-4 md:p-1">
-  <!-- <h1 class="text-2xl font-semibold text-gray-800 mb-6">Laundry Management</h1> -->
-  <form (ngSubmit)="onSubmit()">
-    <div class="bg-white rounded-lg p-6 shadow-sm mb-6">
-      <h2 class="text-xl font-semibold text-gray-700 mb-6">Place New Order</h2>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        <div>
-          <label for="billNumber" class="block mb-1 text-sm font-medium text-gray-700">Bill No:<span
-              class="text-red-500"></span></label>
-          <input type="text" id="billNumber" name="billNumber" [(ngModel)]="billNumber"
-            class="form-input w-full rounded-md border border-gray-300 py-2 px-3 focus:border-indigo-500 focus:ring-indigo-500"
-            placeholder="Enter or select customer" required>
-        </div>
-        <div>
-          <label for="serviceType" class="block mb-1 text-sm font-medium text-gray-700">Service <span
-              class="text-red-500">*</span></label>
-          <select id="serviceType" name="serviceType" [(ngModel)]="serviceType"
-            class="form-select w-full rounded-md border border-gray-300 py-2 px-3 focus:border-indigo-500 focus:ring-indigo-500"
-            required>
-            <option value="">Select Service</option>
-            <option value="Wet_Cleaning">Wet Cleaning</option>
-            <option value="Dry_Cleaning">Dry Cleaning</option>
-            <option value="Wash_Fold">Wash & Fold</option>
-            <option value="Ironing">Ironing</option>
-          </select>
-        </div>
-      </div>
-
-      <h3 class="text-lg font-medium text-gray-700 mb-4">Order Details <span class="text-red-500">*</span></h3>
-      <!-- <div class="space-y-4 mb-4">
-        <div class="hidden md:grid grid-cols-12 gap-4 items-center text-sm font-medium text-gray-600 mb-2 px-2">
-          <div class="col-span-3">Product</div>
-          <div class="col-span-2">Roll/Steem Press</div>
-          <div class="col-span-2 text-center">Quantity</div>
-          <div class="col-span-2 text-right">Unit Price</div>
-          <div class="col-span-2 text-right">Amount</div>
-          <div class="col-span-1"></div>
-        </div>
-
-        <div *ngFor="let item of orderItems; let i = index"
-          class="grid grid-cols-12 gap-4 items-center border border-gray-200 p-3 rounded-md">
-          <div class="col-span-12 md:col-span-5">
-            <label class="block md:hidden text-xs text-gray-500 mb-0.5">Product</label>
-            <select [name]="'item_type_' + i" [(ngModel)]="item.productId" (ngModelChange)="onProductChange(item)"
-              class="form-select w-full rounded-md border border-gray-300 py-2 px-3 focus:border-indigo-500 focus:ring-indigo-500"
-              required>
-              <option [ngValue]="null">Select Cloth</option>
-              <option *ngFor="let cloth of clothList" [value]="cloth._id">{{cloth.type}}</option>
+  <!-- Main Content -->
+  <div class="flex-grow flex flex-col items-center p-4 md:p-8">
+    <!-- Customer Registration and Search -->
+    <div class="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <!-- Customer Registration Form -->
+      <div class="bg-white rounded-xl shadow-lg p-6">
+        <h1 class="text-2xl font-bold text-gray-800 text-center mb-6">Customer Registration</h1>
+        <form class="space-y-4" (ngSubmit)="register()">
+          <div>
+            <input class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" [(ngModel)]="customer.fullName" name="fullName" placeholder="Full Name" required />
+          </div>
+          <div>
+            <input class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" [(ngModel)]="customer.phone" name="phone" placeholder="Phone" required />
+          </div>
+          <div>
+            <input class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" [(ngModel)]="customer.address" name="address" placeholder="Address" required />
+          </div>
+          <div>
+            <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" [(ngModel)]="customer.pickupPreference" name="pickupPreference">
+              <option value="Home">Home</option>
+              <option value="Shop">Shop</option>
             </select>
           </div>
-          <div class="col-span-6 md:col-span-2">
-            <label class="block md:hidden text-xs text-gray-500 mb-0.5">Quantity</label>
-            <input type="number" [name]="'item_quantity_' + i" [(ngModel)]="item.quantity"
-              (ngModelChange)="calculateItemAmount(item)"
-              class="form-input w-full rounded-md border border-gray-300 py-2 px-3 text-center focus:border-indigo-500 focus:ring-indigo-500"
-              placeholder="Qty" min="1" required>
+          <button type="submit" class="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 transition-all duration-300">Register</button>
+          <div *ngIf="errorMessage" class="bg-red-100 text-red-700 p-3 rounded-lg mt-2 text-sm">{{ errorMessage }}</div>
+          <div *ngIf="successMessage" class="bg-green-100 text-green-700 p-3 rounded-lg mt-2 text-sm">{{ successMessage }}</div>
+        </form>
+      </div>
+
+      <!-- Customer Search -->
+      <div class="bg-white rounded-xl shadow-lg p-6">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">Search Customer</h2>
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-select [formControl]="customerCtrl" placeholder="Select Customer" (selectionChange)="onCustomerSelected($event)">
+            <mat-option>
+              <ngx-mat-select-search placeholderLabel="Search customers..." [formControl]="customerCtrl"></ngx-mat-select-search>
+            </mat-option>
+            <mat-option *ngFor="let customer of filteredCustomers | async" [value]="customer">
+              {{ (customer.fullName | titlecase) + ' (' + customer.phone + ')' }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- Order Form -->
+    <div class="w-full max-w-4xl bg-white rounded-xl shadow-lg p-6">
+      <h2 class="text-xl font-semibold text-gray-800 mb-6">Place New Order</h2>
+      <form (ngSubmit)="onSubmit()">
+        <!-- Order Info -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div>
+            <label for="billNumber" class="block text-sm font-medium text-gray-700 mb-1">Bill Number <span class="text-red-500">*</span></label>
+            <input type="text" id="billNumber" name="billNumber" [(ngModel)]="billNumber" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Enter bill number" required />
           </div>
-          <div class="col-span-6 md:col-span-2">
-            <label class="block md:hidden text-xs text-gray-500 mb-0.5">Unit Price</label>
-            <div class="relative">
-              <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">₹</span>
-              <input type="number" [name]="'item_unit_price_' + i" [(ngModel)]="item.unitPrice"
-                (ngModelChange)="calculateItemAmount(item)"
-                class="form-input w-full rounded-md border border-gray-300 py-2 px-3 pl-7 text-right focus:border-indigo-500 focus:ring-indigo-500"
-                placeholder="0.00" step="0.01" min="0" required>
-            </div>
-          </div>
-          <div class="col-span-10 md:col-span-2">
-            <label class="block md:hidden text-xs text-gray-500 mb-0.5">Amount</label>
-            <div class="relative">
-              <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">₹</span>
-              <input type="text" [name]="'item_amount_' + i" [value]="item.amount | number:'1.2-2'"
-                class="form-input w-full rounded-md border border-gray-300 py-2 px-3 pl-7 text-right bg-gray-100 focus:border-indigo-500 focus:ring-indigo-500"
-                placeholder="0.00" readonly>
-            </div>
-          </div>
-          <div class="col-span-2 md:col-span-1 text-right md:text-center self-center">
-            <button type="button" (click)="removeItem(i)" class="text-red-500 hover:text-red-700 p-1">
-              <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" class="h-6 w-6" viewBox="0 0 20 20"
-                fill="currentColor">
-                <path fill-rule="evenodd"
-                  d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                  clip-rule="evenodd" />
-              </svg>
-            </button>
+          <div>
+            <label for="serviceType" class="block text-sm font-medium text-gray-700 mb-1">Service Type <span class="text-red-500">*</span></label>
+            <select id="serviceType" name="serviceType" [(ngModel)]="serviceType" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" required>
+              <option value="">Select Service</option>
+              <option value="Wet_Cleaning">Wet Cleaning</option>
+              <option value="Dry_Cleaning">Dry Cleaning</option>
+              <option value="Wash_Fold">Wash & Fold</option>
+              <option value="Ironing">Ironing</option>
+            </select>
           </div>
         </div>
-      </div> -->
-      <div class="space-y-4 mb-4">
+
+        <!-- Order Items -->
+        <h3 class="text-lg font-medium text-gray-700 mb-4">Order Details <span class="text-red-500">*</span></h3>
         <div class="hidden md:grid grid-cols-12 gap-4 items-center text-sm font-medium text-gray-600 mb-2 px-2">
           <div class="col-span-4">Product</div>
-          <!-- <div class="col-span-2">Roll/Steem Press</div> -->
           <div class="col-span-2 text-center">Quantity</div>
           <div class="col-span-2 text-right">Unit Price</div>
           <div class="col-span-2 text-right">Amount</div>
           <div class="col-span-1"></div>
         </div>
-
-        <div *ngFor="let item of orderItems; let i = index"
-          class="grid grid-cols-12 gap-4 items-center border border-gray-200 p-3 rounded-md">
-
-          <!-- Product Dropdown -->
-          <!-- <div class="col-span-12 md:col-span-4">
-            <label class="block md:hidden text-xs text-gray-500 mb-0.5">Product</label>
-            <select [name]="'item_type_' + i" [(ngModel)]="item.productId" (ngModelChange)="onProductChange(item)"
-              class="form-select w-full rounded-md border border-gray-300 py-2 px-3 focus:border-indigo-500 focus:ring-indigo-500"
-              required>
-              <option [ngValue]="null">Select Cloth</option>
-              <option *ngFor="let cloth of clothList" [value]="cloth._id">{{cloth.type | titlecase}}</option>
-            </select>
-          </div> -->
+        <div *ngFor="let item of orderItems; let i = index" class="grid grid-cols-12 gap-4 items-center border border-gray-200 p-4 rounded-lg mb-4">
           <div class="col-span-12 md:col-span-4">
-            <!-- <div class="col-12 col-md-4 mb-2"> -->
-              <label class="form-label d-md-none text-muted small">Product</label>
-              <select class="form-select" [name]="'item_type_' + i" [(ngModel)]="item.productId"
-                (ngModelChange)="onProductChange(item)" required>
-                <option [ngValue]="null">Select Cloth</option>
-                <option *ngFor="let cloth of clothList" [value]="cloth._id">
-                  {{ cloth.type | titlecase }}
-                </option>
-              </select>
-            <!-- </div> -->
+            <label class="block md:hidden text-xs text-gray-500 mb-1">Product</label>
+            <select [name]="'item_type_' + i" [(ngModel)]="item.productId" (ngModelChange)="onProductChange(item)" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" required>
+              <option [ngValue]="null">Select Cloth</option>
+              <option *ngFor="let cloth of clothList" [value]="cloth._id">{{ cloth.type | titlecase }}</option>
+            </select>
           </div>
-
-          <!-- Roll/Steem Press Dropdown -->
-          <!-- <div class="col-span-12 md:col-span-2">
-            <label class="block md:hidden text-xs text-gray-500 mb-0.5">Roll/Steem Press</label>
-            <select [(ngModel)]="item.rollorpressproduct" [name]="'item_service_type_' + i"
-              class="form-select w-full rounded-md border border-gray-300 py-2 px-3 focus:border-indigo-500 focus:ring-indigo-500"
-              required>
-              <option >Select</option>
-              <option [ngValue]="'Normal'" value="Normal">Normal</option>
-              <option value="roll_press">Roll Press</option>
-              <option value="steem_press">Steam Press</option>
-            </select> 
-          </div> -->
-
-          <!-- Quantity Input -->
           <div class="col-span-6 md:col-span-2">
-            <label class="block md:hidden text-xs text-gray-500 mb-0.5">Quantity</label>
-            <input type="number" [name]="'item_quantity_' + i" [(ngModel)]="item.quantity"
-              (ngModelChange)="calculateItemAmount(item)"
-              class="form-input w-full rounded-md border border-gray-300 py-2 px-3 text-center focus:border-indigo-500 focus:ring-indigo-500"
-              placeholder="Qty" min="1" required>
+            <label class="block md:hidden text-xs text-gray-500 mb-1">Quantity</label>
+            <input type="number" [name]="'item_quantity_' + i" [(ngModel)]="item.quantity" (ngModelChange)="calculateItemAmount(item)" class="w-full px-4 py-3 border border-gray-300 rounded-lg text-center focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Qty" min="1" required />
           </div>
-
-          <!-- Unit Price -->
           <div class="col-span-6 md:col-span-2">
-            <label class="block md:hidden text-xs text-gray-500 mb-0.5">Unit Price</label>
+            <label class="block md:hidden text-xs text-gray-500 mb-1">Unit Price</label>
             <div class="relative">
-              <span class="absolute left-3  -translate-y-1/2 text-gray-500" style="top: 80%;">₹</span>
-              <input type="number" [name]="'item_unit_price_' + i" [(ngModel)]="item.unitPrice"
-                (ngModelChange)="calculateItemAmount(item)"
-                class="form-input w-full rounded-md border border-gray-300 py-2 px-3 pl-7 text-right focus:border-indigo-500 focus:ring-indigo-500"
-                placeholder="0.00" step="0.01" min="0" required>
+              <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">₹</span>
+              <input type="number" [name]="'item_unit_price_' + i" [(ngModel)]="item.unitPrice" (ngModelChange)="calculateItemAmount(item)" class="w-full px-4 py-3 pl-8 border border-gray-300 rounded-lg text-right focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="0.00" step="0.01" min="0" required />
             </div>
           </div>
-
-          <!-- Amount -->
           <div class="col-span-10 md:col-span-2">
-            <label class="block md:hidden text-xs text-gray-500 mb-0.5">Amount</label>
+            <label class="block md:hidden text-xs text-gray-500 mb-1">Amount</label>
             <div class="relative">
-              <span class="absolute left-3  -translate-y-1/2 text-gray-500" style="top: 80%;">₹</span>
-              <input type="text" [name]="'item_amount_' + i" [value]="item.amount | number:'1.2-2'"
-                class="form-input w-full rounded-md border border-gray-300 py-2 px-3 pl-7 text-right bg-gray-100 focus:border-indigo-500 focus:ring-indigo-500"
-                placeholder="0.00" readonly>
+              <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">₹</span>
+              <input type="text" [name]="'item_amount_' + i" [value]="item.amount | number:'1.2-2'" class="w-full px-4 py-3 pl-8 border border-gray-300 rounded-lg text-right" placeholder="0.00" readonly />
             </div>
           </div>
-
-          <!-- Remove Button -->
           <div class="col-span-2 md:col-span-1 text-right md:text-center self-center">
-            <button type="button" (click)="removeItem(i)" class="text-red-500 hover:text-red-700 p-1">
+            <button type="button" (click)="removeItem(i)" class="text-red-500 hover:text-red-700 p-2">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd"
-                  d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                  clip-rule="evenodd" />
+                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
               </svg>
             </button>
           </div>
         </div>
-      </div>
+        <button type="button" (click)="addNewItem()" class="inline-flex items-center text-indigo-600 hover:text-indigo-700 font-medium">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
+          </svg>
+          Add New Item
+        </button>
 
-      <button type="button" (click)="addNewItem()"
-        class="text-indigo-600 hover:text-indigo-700 font-medium inline-flex items-center">
-        <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" class="h-5 w-5 mr-1" viewBox="0 0 20 20"
-          fill="currentColor">
-          <path fill-rule="evenodd"
-            d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-            clip-rule="evenodd" />
-        </svg>
-        Add New
-      </button>
-    </div>
-
-    <div class="bg-white rounded-lg p-6 shadow-sm mb-6">
-      <h3 class="text-lg font-medium text-gray-700 mb-4">Charges</h3>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4">
-        <div class="flex justify-between items-center">
-          <span class="text-gray-600">Subtotal</span>
-          <div class="relative w-32">
-            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" style="top: 80%;">₹</span>
-            <input type="text" id="subtotal" name="subtotal" [value]="subtotal | number:'1.2-2'"
-              class="form-input w-full rounded-md border border-gray-300 py-2 px-3 pl-7 text-right bg-gray-100"
-              readonly>
-          </div>
-        </div>
-        <div class="flex justify-between items-center">
-          <span class="text-gray-600">Pickup Charge</span>
-          <div class="relative w-32">
-            <span class="absolute left-3 top-9 -translate-y-1/2 text-gray-500">₹</span>
-            <input type="number" id="pickupCharge" name="pickupCharge" [(ngModel)]="pickupCharge"
-              (ngModelChange)="calculateAllTotals()"
-              class="form-input w-full rounded-md border border-gray-300 py-2 px-3 pl-7 text-right" step="0.01" min="0">
-          </div>
-        </div>
-        <div class="flex justify-between items-center">
-          <span class="text-gray-600">Old Amount</span>
-          <div class="relative w-32">
-            <span class="absolute left-3 top-9 -translate-y-1/2 text-gray-500">₹</span>
-            <input type="text" id="taxAmount" [(ngModel)]="taxAmount" name="taxAmount"
-              (ngModelChange)="calculateAllTotals()"
-              class="form-input w-full rounded-md border border-gray-300 py-2 px-3 pl-7 text-right bg-gray-100">
-          </div>
-        </div>
-        <div class="flex justify-between items-center">
-          <span class="text-gray-600">Delivery Charge</span>
-          <div class="relative w-32">
-            <span class="absolute left-3 top-9 -translate-y-1/2 text-gray-500">₹</span>
-            <input type="number" id="deliveryCharge" name="deliveryCharge" [(ngModel)]="deliveryCharge"
-              (ngModelChange)="calculateAllTotals()"
-              class="form-input w-full rounded-md border border-gray-300 py-2 px-3 pl-7 text-right" step="0.01" min="0">
-          </div>
-        </div>
-        <div class="md:col-span-2 border-t border-gray-300 pt-4 mt-2">
-          <div class="flex justify-between items-center font-semibold text-lg text-gray-800">
-            <span>Total Amount</span>
-            <div class="relative w-36">
-              <span class="absolute left-3 top-9 -translate-y-1/2 text-gray-500">₹</span>
-              <input type="text" id="totalAmount" name="totalAmount" [value]="totalAmount | number:'1.2-2'"
-                class="form-input w-full rounded-md border border-gray-300 py-2 px-3 pl-7 text-right bg-gray-100 font-semibold text-lg"
-                readonly>
+        <!-- Charges -->
+        <div class="mt-8">
+          <h3 class="text-lg font-medium text-gray-700 mb-4">Charges</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4">
+            <div class="flex justify-between items-center">
+              <span class="text-gray-600">Subtotal</span>
+              <div class="relative w-32">
+                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">₹</span>
+                <input type="text" id="subtotal" name="subtotal" [value]="subtotal | number:'1.2-2'" class="w-full px-4 py-3 pl-8 border border-gray-300 rounded-lg text-right bg-gray-100" readonly />
+              </div>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-gray-600">Pickup Charge</span>
+              <div class="relative w-32">
+                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">₹</span>
+                <input type="number" id="pickupCharge" name="pickupCharge" [(ngModel)]="pickupCharge" (ngModelChange)="calculateAllTotals()" class="w-full px-4 py-3 pl-8 border border-gray-300 rounded-lg text-right focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" step="0.01" min="0" />
+              </div>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-gray-600">Old Amount</span>
+              <div class="relative w-32">
+                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">₹</span>
+                <input type="text" id="taxAmount" [(ngModel)]="taxAmount" name="taxAmount" (ngModelChange)="calculateAllTotals()" class="w-full px-4 py-3 pl-8 border border-gray-300 rounded-lg text-right bg-gray-100" />
+              </div>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-gray-600">Delivery Charge</span>
+              <div class="relative w-32">
+                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">₹</span>
+                <input type="number" id="deliveryCharge" name="deliveryCharge" [(ngModel)]="deliveryCharge" (ngModelChange)="calculateAllTotals()" class="w-full px-4 py-3 pl-8 border border-gray-300 rounded-lg text-right focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" step="0.01" min="0" />
+              </div>
+            </div>
+            <div class="md:col-span-2 border-t border-gray-200 pt-4 mt-2">
+              <div class="flex justify-between items-center font-semibold text-lg text-gray-800">
+                <span>Total Amount</span>
+                <div class="relative w-36">
+                  <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">₹</span>
+                  <input type="text" id="totalAmount" name="totalAmount" [value]="totalAmount | number:'1.2-2'" class="w-full px-4 py-3 pl-8 border border-gray-300 rounded-lg text-right bg-gray-100 font-semibold text-lg" readonly />
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
 
-    <div class="bg-white rounded-lg p-6 shadow-sm mb-6">
-      <h3 class="text-lg font-medium text-gray-700 mb-4">Pickup & Delivery</h3>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <label for="pickupType" class="block mb-1 text-sm font-medium text-gray-700">Pickup Type <span
-              class="text-red-500">*</span></label>
-          <select id="pickupType" name="pickupType" [(ngModel)]="selectedPickupType"
-            class="form-select w-full rounded-md border border-gray-300 py-2 px-3 focus:border-indigo-500 focus:ring-indigo-500"
-            required>
-            <option *ngFor="let type of pickupTypes" [value]="type">{{type}}</option>
-          </select>
-          <label for="bookingDate" class="block mt-2 mb-1 text-sm font-medium text-gray-700">Booking Date</label>
-          <input type="date" id="bookingDate" name="bookingDate" [(ngModel)]="bookingDate"
-            class="form-input w-full rounded-md border border-gray-300 py-2 px-3 focus:border-indigo-500 focus:ring-indigo-500">
+        <!-- Pickup & Delivery -->
+        <div class="mt-8">
+          <h3 class="text-lg font-medium text-gray-700 mb-4">Pickup & Delivery</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label for="pickupType" class="block text-sm font-medium text-gray-700 mb-1">Pickup Type <span class="text-red-500">*</span></label>
+              <select id="pickupType" name="pickupType" [(ngModel)]="selectedPickupType" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" required>
+                <option *ngFor="let type of pickupTypes" [value]="type">{{ type }}</option>
+              </select>
+              <label for="bookingDate" class="block mt-4 text-sm font-medium text-gray-700 mb-1">Booking Date</label>
+              <input type="date" id="bookingDate" name="bookingDate" [(ngModel)]="bookingDate" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
+            </div>
+            <div>
+              <label for="deliveryType" class="block text-sm font-medium text-gray-700 mb-1">Delivery Type <span class="text-red-500">*</span></label>
+              <select id="deliveryType" name="deliveryType" [(ngModel)]="selectedDeliveryType" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" required>
+                <option *ngFor="let type of deliveryTypes" [value]="type">{{ type }}</option>
+              </select>
+              <label for="deliveryDate" class="block mt-4 text-sm font-medium text-gray-700 mb-1">Delivery Date</label>
+              <input type="date" id="deliveryDate" name="deliveryDate" [(ngModel)]="deliveryDate" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
+            </div>
+          </div>
         </div>
-        <div>
-          <label for="deliveryType" class="block mb-1 text-sm font-medium text-gray-700">Delivery Type <span
-              class="text-red-500">*</span></label>
-          <select id="deliveryType" name="deliveryType" [(ngModel)]="selectedDeliveryType"
-            class="form-select w-full rounded-md border border-gray-300 py-2 px-3 focus:border-indigo-500 focus:ring-indigo-500"
-            required>
-            <option *ngFor="let type of deliveryTypes" [value]="type">{{type}}</option>
-          </select>
-          <label for="deliveryDate" class="block mt-2 mb-1 text-sm font-medium text-gray-700">Delivery Date</label>
-          <input type="date" id="deliveryDate" name="deliveryDate" [(ngModel)]="deliveryDate"
-            class="form-input w-full rounded-md border border-gray-300 py-2 px-3 focus:border-indigo-500 focus:ring-indigo-500">
-        </div>
-      </div>
-    </div>
 
-    <div class="bg-white rounded-lg p-6 shadow-sm mb-6">
-      <div class="mt-8 flex justify-end gap-4">
-        <!-- <button (click)="printAndPlaceOrder()" type="button"
-          class="btn-primary bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 px-5 rounded-md">
-          Print and Place Order
-        </button> -->
-        <button type="submit"
-          class="btn-primary bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 px-5 rounded-md">
-          Place Order
-        </button>
-      </div>
+        <!-- Submit Button -->
+        <div class="mt-8 flex justify-end">
+          <button type="submit" class="bg-indigo-600 text-white py-3 px-6 rounded-lg hover:bg-indigo-700 transition-all duration-300">Place Order</button>
+        </div>
+      </form>
     </div>
-  </form>
+  </div>
 </div>

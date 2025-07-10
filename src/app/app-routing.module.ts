@@ -13,6 +13,7 @@ import { DressReportsComponent } from './dress-reports/dress-reports.component';
 import { ViewCustomerDetailComponent } from './view-customer-detail/view-customer-detail.component';
 import { PrintBillComponent } from './print-bill/print-bill.component';
 import { RollPressMasterComponent } from './roll-press-master/roll-press-master.component';
+import { UpdateCustomerComponent } from './update-customer/update-customer.component';
 
 const routes: Routes = [
   { path: 'register', component: RegistrationComponent },
@@ -27,6 +28,7 @@ const routes: Routes = [
   { path: 'view-customer-details', component: ViewCustomerDetailComponent, canActivate: [AuthGuard] },
   { path: 'print-bill', component: PrintBillComponent, canActivate: [AuthGuard] },
   { path: 'roll-press-master', component: RollPressMasterComponent, canActivate: [AuthGuard] },
+  { path: 'update-customer', component: UpdateCustomerComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: 'login' }
 ];
 

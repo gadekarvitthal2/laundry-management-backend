@@ -3,6 +3,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { DataService } from '../services/data.service';
 import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatDialog } from '@angular/material/dialog';
+import { UpdateCustomerComponent } from '../update-customer/update-customer.component';
 
 @Component({
   selector: 'app-customer-details',
@@ -11,7 +13,11 @@ import { MatPaginator } from '@angular/material/paginator';
   styleUrl: './customer-details.component.scss',
 })
 export class CustomerDetailsComponent implements OnInit {
-  constructor(private dataService: DataService, private router: Router) {}
+  constructor(
+    private dataService: DataService,
+    private router: Router,
+    private dialog: MatDialog
+  ) {}
   dataSource = new MatTableDataSource([]);
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   async ngOnInit(): Promise<void> {
@@ -87,6 +93,24 @@ export class CustomerDetailsComponent implements OnInit {
     this.notifyCustomer(phone);
   }
 
+// component.ts
+confirmDelete(data: any) {
+  console.log('data',data)
+  if (confirm('Are you sure you want to delete this customer?')) {
+    this.dataService.deleteCustomerById(data._id).subscribe({
+      next: () => {
+        alert('Customer deleted successfully');
+        this.getAllCustomers(); // refresh list
+      },
+      error: (err) => {
+        console.error('Delete failed:', err);
+        alert('Failed to delete customer');
+      }
+    });
+  }
+}
+
+
   notifyCustomer(phoneNo: string): void {
     if (!phoneNo) {
       alert('Phone number is missing.');
@@ -111,6 +135,19 @@ export class CustomerDetailsComponent implements OnInit {
     // Logic to view details of the selected customer
     this.router.navigate(['/view-customer-details'], {
       queryParams: { customerId: customerId },
+    });
+  }
+
+  openEditDialog(customer: any): void {
+    const dialogRef = this.dialog.open(UpdateCustomerComponent, {
+      width: '400px',
+      data: { ...customer },
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      if (result) {
+        this.getAllCustomers();
+      }
     });
   }
 }

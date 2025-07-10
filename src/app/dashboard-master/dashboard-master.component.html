@@ -1,13 +1,30 @@
-<div class="back-btn-container">
+<!-- <div class="back-btn-container">
   <button class="back-btn" [routerLink]="['/dashboard']">← Back</button>
-</div>
-<div class="dashboard-container">
-  <div class="dashboard-card" [routerLink]="'/dress-master'">
-    <h3>Dress & Price Master</h3>
-    <p>Manage dress and price information</p>
+</div> -->
+  <!-- Back Button -->
+  <div class="p-4">
+    <button class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all duration-300" [routerLink]="['/dashboard']">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+      </svg>
+      Back to Dashboard
+    </button>
   </div>
-    <div class="dashboard-card" [routerLink]="'/roll-press-master'">
+
+<div class="dashboard-container">
+  <div class="dashboard-card dress-master" [routerLink]="'/dress-master'">
+    <div class="icon-container">
+      <i class="material-icons">checkroom</i>
+    </div>
+    <h3>Dress & Price Master</h3>
+    <p>Manage dress types, categories, and pricing details.</p>
+  </div>
+
+  <div class="dashboard-card roll-master" [routerLink]="'/roll-press-master'" style="display: none;">
+    <div class="icon-container">
+      <i class="material-icons">dry_cleaning</i>
+    </div>
     <h3>Roll & Press Master</h3>
-    <p>Manage roll and press information</p>
+    <p>Configure roll press and steam press pricing.</p>
   </div>
 </div>

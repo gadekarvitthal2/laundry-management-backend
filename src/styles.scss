@@ -7,13 +7,14 @@ body {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  background-image: url("./assets/background.jpg");
+  // background-image: url("./assets/background.jpg");
+  background-color: #F9FAFB;
   background-size: cover;
 }
 .heading {
   text-align: center;
   margin: 10px 0px;
-  color: white;
+  color: black;
   padding: 10px 0px;
   font-weight: 600;
   font-size: x-large;

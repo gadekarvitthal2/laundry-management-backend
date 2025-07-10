@@ -1,10 +1,19 @@
-<div class="back-btn-container" style="position: absolute;">
-    <button class="back-btn" [routerLink]="['/dashboard']">← Back</button>
+<!-- Back Button -->
+<div class="p-4">
+    <button
+        class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all duration-300"
+        [routerLink]="['/dashboard']">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd"
+                d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                clip-rule="evenodd" />
+        </svg>
+        Back to Dashboard
+    </button>
 </div>
 
 <h1 class="heading">Customer Details</h1>
-
-<div>
+<div class="customer-table-container">
     <div class="bg-white rounded-lg p-6 shadow-sm mb-6 filters">
         <mat-form-field class="full-width">
             <mat-label>Search Customers</mat-label>
@@ -12,90 +21,88 @@
         </mat-form-field>
     </div>
 
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <!-- Scrollable table wrapper -->
+    <div class="table-responsive">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 mat-table-responsive">
 
-        <!-- Index Column -->
-        <ng-container matColumnDef="index">
-            <th mat-header-cell *matHeaderCellDef>#</th>
-            <td mat-cell *matCellDef="let element; let i = index">{{ i + 1 }}</td>
-        </ng-container>
+            <!-- Index Column -->
+            <ng-container matColumnDef="index">
+                <th mat-header-cell *matHeaderCellDef>#</th>
+                <td mat-cell *matCellDef="let element; let i = index">{{ i + 1 }}</td>
+            </ng-container>
 
-        <!-- Full Name Column -->
-        <ng-container matColumnDef="fullName">
-            <th mat-header-cell *matHeaderCellDef>Customer Name</th>
-            <td mat-cell *matCellDef="let element">{{ element.fullName }}</td>
-        </ng-container>
+            <!-- Full Name Column -->
+            <ng-container matColumnDef="fullName">
+                <th mat-header-cell *matHeaderCellDef>Customer Name</th>
+                <td mat-cell *matCellDef="let element">{{ element.fullName }}</td>
+            </ng-container>
 
-        <!-- Phone Column -->
-        <ng-container matColumnDef="phone">
-            <th mat-header-cell *matHeaderCellDef>Phone</th>
-            <td mat-cell *matCellDef="let element">{{ element.phone }}</td>
-        </ng-container>
+            <!-- Phone Column -->
+            <ng-container matColumnDef="phone">
+                <th mat-header-cell *matHeaderCellDef>Phone</th>
+                <td mat-cell *matCellDef="let element">{{ element.phone }}</td>
+            </ng-container>
 
-        <!-- Email Column -->
-        <!-- <ng-container matColumnDef="email">
+            <!-- Email Column -->
+            <!-- <ng-container matColumnDef="email">
             <th mat-header-cell *matHeaderCellDef>Email</th>
             <td mat-cell *matCellDef="let element">{{ element.email }}</td>
         </ng-container> -->
 
-        <!-- Address Column -->
-        <ng-container matColumnDef="address">
-            <th mat-header-cell *matHeaderCellDef>Address</th>
-            <td mat-cell *matCellDef="let element">{{ element.address }}</td>
-        </ng-container>
+            <!-- Address Column -->
+            <ng-container matColumnDef="address">
+                <th mat-header-cell *matHeaderCellDef>Address</th>
+                <td mat-cell *matCellDef="let element">{{ element.address }}</td>
+            </ng-container>
 
-        <!-- Created At Column -->
-        <ng-container matColumnDef="createdAt">
-            <th mat-header-cell *matHeaderCellDef>Created At</th>
-            <td mat-cell *matCellDef="let element">{{ element.createdAt | date:'dd-MM-yyyy' }}</td>
-        </ng-container>
+            <!-- Created At Column -->
+            <ng-container matColumnDef="createdAt">
+                <th mat-header-cell *matHeaderCellDef>Created At</th>
+                <td mat-cell *matCellDef="let element">{{ element.createdAt | date:'dd-MM-yyyy' }}</td>
+            </ng-container>
 
-        <!-- Booking Date Column -->
-        <ng-container matColumnDef="bookingDate">
-            <th mat-header-cell *matHeaderCellDef>Booking Date</th>
-            <td mat-cell *matCellDef="let element">{{ (element.bookingDate | date:'dd-MM-yyyy') || '-'}}</td>
-        </ng-container>
+            <!-- Booking Date Column -->
+            <ng-container matColumnDef="bookingDate">
+                <th mat-header-cell *matHeaderCellDef>Booking Date</th>
+                <td mat-cell *matCellDef="let element">{{ (element.bookingDate | date:'dd-MM-yyyy') || '-'}}</td>
+            </ng-container>
 
-        <!-- Amount Column -->
-        <!-- <ng-container matColumnDef="Amount">
-            <th mat-header-cell *matHeaderCellDef>Amount</th>
-            <td mat-cell *matCellDef="let element">{{ (element.totalAmount | currency:'INR':'symbol':'1.2-2') || '-'}}</td>
-        </ng-container> -->
+            <!-- Place Order At Column with mat button -->
+            <ng-container matColumnDef="placeOrderAt">
+                <th mat-header-cell *matHeaderCellDef>Place Order At</th>
+                <td mat-cell *matCellDef="let element">
+                    <button mat-button (click)="placeOrder(element._id)">Place new Order</button>
+                </td>
+            </ng-container>
 
-        <!-- Place Order At Column with mat button -->
-        <ng-container matColumnDef="placeOrderAt">
-            <th mat-header-cell *matHeaderCellDef>Place Order At</th>
-            <td mat-cell *matCellDef="let element">
-                <button mat-button (click)="placeOrder(element._id)">Place new Order</button>
-            </td>
-        </ng-container>
-        <!-- [ngStyle]="{'background-color': element.isDelivered ? 'lightgreen' : ''}" -->
-        <!-- Notify Customer -->
-        <!-- <ng-container matColumnDef="notifyCustomer">
-            <th mat-header-cell *matHeaderCellDef>Notify Delivery</th>
-            <td mat-cell *matCellDef="let element">
-                <button mat-button (click)="deliverOrder(element._id,element.phone)">Notify</button>
-            </td>
-        </ng-container> -->
+            <!-- Actions Column -->
+            <ng-container matColumnDef="actions">
+                <th class="text-center" mat-header-cell *matHeaderCellDef>Actions</th>
+                <td mat-cell *matCellDef="let element" >
+                    <button mat-button (click)="viewData(element._id)">
+                        <i class="material-icons">visibility</i>
+                    </button>
+                    <button mat-button (click)="copyDeliveryMessage()" title="Copy Message">
+                        <i class="material-icons">content_copy</i>
+                    </button>
+                    <button mat-button (click)="openEditDialog(element)" title="Edit Delivery">
+                        <i class="material-icons">edit</i>
+                    </button>
+                    <!-- <button mat-button (click)="deleteDeliveryDetails()" title="Delete Delivery">
+                    <i class="material-icons">delete</i>
+                </button> -->
+                    <button mat-button color="" (click)="confirmDelete(element)" title="Delete Customer">
+                        <i style="color: red;" class="material-icons">delete</i>
+                    </button>
+                </td>
+            </ng-container>
+            <!-- ... -->
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </div>
 
-        <!-- Actions Column -->
-        <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef>Actions</th>
-            <td mat-cell *matCellDef="let element">
-                <button mat-button (click)="viewData(element._id)">
-                    <i class="material-icons">visibility</i>
-                </button>
-                <button mat-button (click)="copyDeliveryMessage()" title="Copy Message">
-                    <i class="material-icons">content_copy</i>
-                </button>
-            </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
     <mat-paginator [length]="dataSource.data.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 20]"
         showFirstLastButtons>
     </mat-paginator>
-
 </div>

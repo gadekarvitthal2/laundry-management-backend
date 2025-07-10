@@ -1,44 +1,66 @@
-<div class="back-btn-container">
-    <button class="back-btn" [routerLink]="['/dashboard']">← Back</button>
-</div>
-<div>
-  <div>
-    <h1 class="heading">Dress Sales Reports</h1>
+<div class="min-h-screen bg-blue-50 text-gray-800" style="background-color: #E6F0FA;">
+  <!-- Back Button -->
+  <div class="p-4">
+    <button class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all duration-300" [routerLink]="['/dashboard']">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+      </svg>
+      Back to Dashboard
+    </button>
   </div>
-  <div class="report-controls bg-white rounded-lg p-6 shadow-sm mb-6">
-    <button (click)="getReport('today')">Today</button>
-    <button (click)="getReport('monthly')">Monthly</button>
-    <button (click)="getReport('quarterly')">Quarterly</button>
-    <button (click)="getReport('yearly')">Yearly</button>
-    <label>
-      From: <input type="date" [(ngModel)]="startDate" placeholder="Select start date">
-    </label>
-    <label>
-      To: <input type="date" [(ngModel)]="endDate" placeholder="Select end date">
-    </label>
-    <button (click)="getReport('custom')" [disabled]="!startDate || !endDate">Apply</button>
+
+  <!-- Main Section -->
+  <div class="max-w-6xl mx-auto px-4">
+    <!-- Heading -->
+    <div class="mb-6 text-center">
+      <h1 class="text-2xl font-bold text-gray-900">Dress Sales Reports</h1>
+    </div>
+
+    <!-- Filters -->
+    <div class="bg-white rounded-lg shadow-md p-4 mb-6">
+      <div class="flex flex-wrap gap-3 items-center justify-center md:justify-start">
+        <button (click)="getReport('today')" class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 text-sm transition duration-300">Today</button>
+        <button (click)="getReport('monthly')" class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 text-sm transition duration-300">Monthly</button>
+        <button (click)="getReport('quarterly')" class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 text-sm transition duration-300">Quarterly</button>
+        <button (click)="getReport('yearly')" class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 text-sm transition duration-300">Yearly</button>
+        <div class="flex items-center gap-2">
+          <label class="text-sm text-gray-700">From:</label>
+          <input type="date" [(ngModel)]="startDate" class="px-2 py-1 border border-gray-300 rounded-md focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 text-sm">
+        </div>
+        <div class="flex items-center gap-2">
+          <label class="text-sm text-gray-700">To:</label>
+          <input type="date" [(ngModel)]="endDate" class="px-2 py-1 border border-gray-300 rounded-md focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 text-sm">
+        </div>
+        <button (click)="getReport('custom')" [disabled]="!startDate || !endDate"
+          class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 text-sm transition duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed">
+          Apply
+        </button>
+      </div>
+    </div>
+
+    <!-- Table Container -->
+    <div class="bg-white rounded-lg shadow-md p-4 overflow-x-auto">
+      <table class="w-full min-w-[600px] text-left">
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="p-2 text-sm font-semibold text-gray-700">#</th>
+            <th class="p-2 text-sm font-semibold text-gray-700">Item Name</th>
+            <th class="p-2 text-sm font-semibold text-gray-700">Total Quantity</th>
+            <th class="p-2 text-sm font-semibold text-gray-700">Total Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let report of reports; index as i" class="hover:bg-gray-50 transition duration-200">
+            <td class="p-2 text-sm">{{ i + 1 }}</td>
+            <td class="p-2 text-sm">{{ report._id }}</td>
+            <td class="p-2 text-sm">{{ report.totalQuantity }}</td>
+            <td class="p-2 text-sm">{{ report.totalAmount | currency:'INR' }}</td>
+          </tr>
+          <tr *ngIf="!reports.length" class="hover:bg-gray-50 transition duration-200">
+            <td colspan="4" class="p-2 text-sm text-center text-gray-500">No data available</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
-<div class="report-table-container">
-  <table class="report-table" >
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Item Name</th>
-        <th>Total Quantity</th>
-        <th>Total Amount</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let report of reports; index as i">
-        <td>{{ i + 1 }}</td>
-        <td>{{ report._id }}</td>
-        <td>{{ report.totalQuantity }}</td>
-        <td>{{ report.totalAmount | currency:'INR' }}</td>
-      </tr>
-      <tr *ngIf="!reports.length">
-        <td colspan="4">No data available</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
 </div>

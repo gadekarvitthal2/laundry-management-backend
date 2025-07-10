@@ -1,113 +1,132 @@
-/* Filters Styling */
-.filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin: 20px 0;
-}
+// /* Filters Styling */
+// .filters {
+//   display: flex;
+//   flex-wrap: wrap;
+//   gap: 12px;
+//   margin: 20px 0;
+// }
 
-.filters button {
-  background-color: #1976d2;
-  color: white;
-  border-radius: 20px;
-  padding: 6px 16px;
-  font-weight: 500;
-  transition: 0.3s ease;
-}
+// .filters button {
+//   background-color: #1976d2;
+//   color: white;
+//   border-radius: 20px;
+//   padding: 6px 16px;
+//   font-weight: 500;
+//   transition: 0.3s ease;
+// }
 
-.filters button:hover {
-  background-color: #1565c0;
-}
+// .filters button:hover {
+//   background-color: #1565c0;
+// }
 
-/* Table Styling */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  overflow: hidden;
-  border-radius: 12px;
-}
+// /* Table Styling */
+// table {
+//   width: 100%;
+//   border-collapse: collapse;
+//   overflow: hidden;
+//   border-radius: 12px;
+// }
 
-/* Header Cells */
-table th {
-  background-color: #f5f5f5;
-  font-weight: 600;
-  font-size: 14px;
-  padding: 12px;
-  color: #333;
-}
+// /* Header Cells */
+// table th {
+//   background-color: #f5f5f5;
+//   font-weight: 600;
+//   font-size: 14px;
+//   padding: 12px;
+//   color: #333;
+// }
 
-/* Data Cells */
-table td {
-  padding: 10px 12px;
-  font-size: 14px;
-  color: #444;
-  border-bottom: 1px solid #e0e0e0;
-}
+// /* Data Cells */
+// table td {
+//   padding: 10px 12px;
+//   font-size: 14px;
+//   color: #444;
+//   border-bottom: 1px solid #e0e0e0;
+// }
 
-/* Row Hover Effect */
-table tr:hover {
-  background-color: #f0f8ff;
-  transition: background-color 0.2s;
-}
+// /* Row Hover Effect */
+// table tr:hover {
+//   background-color: #f0f8ff;
+//   transition: background-color 0.2s;
+// }
 
-/* Table Shadow */
-.mat-elevation-z8 {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  border-radius: 12px;
-  overflow: hidden;
-  margin-bottom: 20px;
-}
+// /* Table Shadow */
+// .mat-elevation-z8 {
+//   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+//   border-radius: 12px;
+//   overflow: hidden;
+//   margin-bottom: 20px;
+// }
 
-/* Responsive Scroll */
-@media (max-width: 768px) {
-  table {
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
+// /* Responsive Scroll */
+// @media (max-width: 768px) {
+//   table {
+//     display: block;
+//     overflow-x: auto;
+//     white-space: nowrap;
+//   }
+// }
+
+// .heading {
+//     font-size: x-large;
+//     text-align: center;
+//     color: #fff;
+// }
+
+// .back-btn {
+//   background-color: #007bff;
+//   border: none;
+//   color: #fff;
+//   padding: 0.5rem 1.2rem;
+//   font-size: 1rem;
+//   border-radius: 8px;
+//   cursor: pointer;
+//   transition: background-color 0.3s ease, transform 0.2s ease;
+//   font-weight: 500;
+
+//   &:hover {
+//     background-color: #d6d6d6;
+//     transform: translateX(-2px);
+//   }
+
+//   &:active {
+//     background-color: #c0c0c0;
+//   }
+// }
+
+// .table-container {
+//   padding: 16px;
+//   background: #fefefe;
+//   border-radius: 8px;
+//   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+// }
+
+// .full-width-table {
+//   width: 100%;
+//   margin-bottom: 10px;
+// }
+
+// .search-field {
+//   width: 300px;
+//   margin-bottom: 16px;
+//   display: block;
+// }
+::ng-deep .mat-form-field {
+    @apply w-full;
   }
-}
-
-.heading {
-    font-size: x-large;
-    text-align: center;
-    color: #fff;
-}
-
-.back-btn {
-  background-color: #007bff;
-  border: none;
-  color: #fff;
-  padding: 0.5rem 1.2rem;
-  font-size: 1rem;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  font-weight: 500;
-
-  &:hover {
-    background-color: #d6d6d6;
-    transform: translateX(-2px);
+  ::ng-deep .mat-form-field-flex {
+    @apply border border-gray-300 rounded-lg p-2 bg-white;
   }
-
-  &:active {
-    background-color: #c0c0c0;
+  ::ng-deep .mat-form-field-label {
+    @apply text-sm text-gray-700;
   }
-}
-
-.table-container {
-  padding: 16px;
-  background: #fefefe;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-.full-width-table {
-  width: 100%;
-  margin-bottom: 10px;
-}
-
-.search-field {
-  width: 300px;
-  margin-bottom: 16px;
-  display: block;
-}
+  ::ng-deep .mat-input-element {
+    @apply text-sm;
+  }
+  /* Ensure paginator fits the design */
+  ::ng-deep .mat-paginator {
+    @apply bg-white rounded-lg p-2 shadow-md;
+  }
+  ::ng-deep .mat-paginator-container {
+    @apply justify-between;
+  }

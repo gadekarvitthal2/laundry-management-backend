@@ -29,7 +29,8 @@ export class ViewCustomerDetailComponent {
   constructor(
     private router: ActivatedRoute,
     private dataService: DataService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private routerNew:Router
   ) {
     this.router.queryParams.subscribe((params: any) => {
       this.customerId = params['customerId'];
@@ -356,5 +357,16 @@ Please visit again.`;
     const encodedMessage = encodeURIComponent(message);
     const url = `https://wa.me/91${phoneNo}?text=${encodedMessage}`; // Add country code explicitly
     window.open(url, '_blank');
+  }
+
+  editOrder(data: any) {
+    console.log('data',data._id);
+     this.routerNew.navigate(['/customer-registration'], {
+      queryParams: { orderId: data._id },
+    });
+  }
+
+  deleteOrder(data: any) {
+
   }
 }

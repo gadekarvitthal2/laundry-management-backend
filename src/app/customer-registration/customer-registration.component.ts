@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DataService } from '../services/data.service';
 import { FormControl } from '@angular/forms';
 import { Observable, startWith, map } from 'rxjs';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { position } from 'html2canvas/dist/types/css/property-descriptors/position';
 
 @Component({
@@ -43,6 +43,7 @@ export class CustomerRegistrationComponent implements OnInit {
   totalAmount: number = 0;
   allConsumerList: any[] = [];
   customerSearch = '';
+  orderId = '';
   showDropdown = false;
   incomingCustomerIdFromReports: string = '';
   billNumber: string = '';
@@ -66,14 +67,21 @@ export class CustomerRegistrationComponent implements OnInit {
   selectedPickupType: string = this.pickupTypes[1];
   selectedDeliveryType: string = this.deliveryTypes[1];
 
-  constructor(private dataService: DataService, private router: Router) {
-    this.router.events.subscribe((data: any) => {
-      if (data?.snapshot?.queryParams?.customerId) {
-        this.incomingCustomerIdFromReports =
-          data.snapshot.queryParams.customerId;
-        if (this.incomingCustomerIdFromReports) {
-          this.customerId = this.incomingCustomerIdFromReports;
-        }
+  constructor(private dataService: DataService, private router: Router,private actRoutes:ActivatedRoute) {
+    // this.router.events.subscribe((data: any) => {
+    //   console.log('ID')
+    //   if (data?.snapshot?.queryParams?.customerId) {
+    //     this.incomingCustomerIdFromReports =
+    //       data.snapshot.queryParams.customerId;
+    //     if (this.incomingCustomerIdFromReports) {
+    //       this.customerId = this.incomingCustomerIdFromReports;
+    //     }
+    //   }
+    // });
+    this.actRoutes.queryParams.subscribe((params) => {
+      if (params['orderId']) {
+        this.orderId  = params['orderId'];
+        console.log('this.orderId ',this.orderId )
       }
     });
   }
