@@ -34,6 +34,7 @@ export class PrintBillComponent {
   ];
   items: any[][] = [];
 billNumber: any;
+billDateAndTime: any;
   customerId: any;
   constructor(
     private dataService: DataService,
@@ -196,7 +197,9 @@ billNumber: any;
   }
 
   parseApiToBillData(apiResponse: any): any[] {
+    console.log('apiResponse',apiResponse)
     const createdAt = new Date(apiResponse.createdAt);
+    this.billDateAndTime = new Date(apiResponse.createdAt);
     const deliveryDate = new Date(apiResponse.deliveryDetails.date);
     const items = apiResponse.items;
     this.billNumber = apiResponse.billNumber
@@ -361,7 +364,7 @@ notifyCustomer(customerId: string, items: any[], phone: string): void {
   const message = 
 `*Name:* ${fullName.toLocaleUpperCase()}
 *Bill.No:* ${this.removeLeadingZeros(this.billNumber)}
-*B.D:* ${this.formatDateWithOptionalTime(customer.createdAt)}
+*B.D:* ${this.formatDateWithOptionalTime(this.billDateAndTime)}
 *D.D:* ${this.formatDateWithOptionalTime(deliveryDate)}
 *Your order has been Placed.*
 
@@ -439,7 +442,7 @@ copyOrderMessage(): void {
     : 'Customer';
 
   const billNumber = this.removeLeadingZeros(this.billNumber || '');
-  const bookingDate = this.formatDateWithOptionalTime(customer?.createdAt);
+  const bookingDate = this.formatDateWithOptionalTime(this.billDateAndTime);
   const deliveryDate = this.formatDateWithOptionalTime(this.finalOrder?.deliveryDetails?.date);
   const address = customer?.address || 'No Address';
 

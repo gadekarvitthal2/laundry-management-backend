@@ -134,7 +134,7 @@ notifyCustomer(customerId: string, element?: any, phone?: string): void {
   const address = customer.address || 'No Address';
   const fullName = this.dataService?.toTitleCase(customer.fullName || 'Customer');
   const billNumber = this.removeLeadingZeros(element?.billNumber || '');
-  const bookingDate = this.formatDateWithOptionalTime(customer?.createdAt);
+  const bookingDate = this.formatDateWithOptionalTime(element.createdAt);
   const deliveryDate = this.formatDateWithRemoveTime(element?.deliveryDetails?.date);
 
   if (!items.length) {
@@ -249,6 +249,7 @@ Please visit again.`;
     }
 
     const customer = element?.customerId;
+    // const billDate = element?.createdAt;
     const address = this.dataService?.toTitleCase(
       customer?.address || 'No Address'
     );
@@ -256,7 +257,7 @@ Please visit again.`;
       customer?.fullName || 'Customer'
     );
     const billNumber = this.removeLeadingZeros(element?.billNumber || '');
-    const bookingDate = this.formatDateWithOptionalTime(customer?.createdAt);
+    const bookingDate = this.formatDateWithOptionalTime(element.createdAt);
     const deliveryDate = this.formatDateWithRemoveTime(
       element?.deliveryDetails?.date
     );
