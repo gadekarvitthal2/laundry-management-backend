@@ -234,7 +234,7 @@ billNumber: any;
           booking_no: `WC/${apiResponse.billNumber}${
             batchedItems.length > 1 ? '-' + (index + 1) : ''
           }`,
-          booking_date: createdAt.toLocaleDateString('en-GB'),
+          booking_date: createdAt,
           delivery_date: deliveryDate.toLocaleDateString('en-GB'),
         },
         customer_info: {

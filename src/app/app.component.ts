@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { LoaderService } from './services/loader.service';
 
 @Component({
   selector: 'app-root',
@@ -8,7 +9,14 @@ import { Router } from '@angular/router';
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
-  constructor(private router: Router) {}
+  isLoading = false;
+
+  constructor(private router: Router, private loaderService: LoaderService) {
+    this.loaderService.isLoading$.subscribe((val) => {
+      this.isLoading = val;
+    });
+  }
+  
   ngOnInit() {
     const token = localStorage.getItem('token');
     if (token) {

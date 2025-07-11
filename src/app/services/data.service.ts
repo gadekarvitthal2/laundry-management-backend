@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { environment } from '../envitoments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -110,6 +109,10 @@ export class DataService {
     );
   }
 
+  deleteOrderById(orderId: string) {
+    return this.http.delete(`${this.baseUrl}/orders/remove-order/${orderId}`);
+  }
+
   updatePickupDateById(customerId: string, bookingDate: Date): Observable<any> {
     return this.http.put(
       `${this.baseUrl}/customers/update-pickup-date/${customerId}`,
@@ -166,11 +169,15 @@ export class DataService {
   }
 
   updateCustomer(customerId: string, data: any) {
-    return this.http.put(`${this.baseUrl}/customers/update-customer/${customerId}`, data);
+    return this.http.put(
+      `${this.baseUrl}/customers/update-customer/${customerId}`,
+      data
+    );
   }
 
   deleteCustomerById(customerId: string) {
-    return this.http.delete(`${this.baseUrl}/customers/delete-customer/${customerId}`);
+    return this.http.delete(
+      `${this.baseUrl}/customers/delete-customer/${customerId}`
+    );
   }
-
 }

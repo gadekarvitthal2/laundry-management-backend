@@ -366,7 +366,18 @@ Please visit again.`;
     });
   }
 
-  deleteOrder(data: any) {
+deleteOrder(orderId: string) {
+    if (!confirm('Are you sure you want to delete this order?')) return;
 
+    this.dataService.deleteOrderById(orderId).subscribe({
+      next: (res: any) => {
+        alert('Order deleted successfully');
+        // this.allConsumerList = this.allConsumerList.filter(order => order._id !== orderId);
+      },
+      error: (err) => {
+        console.error('Error deleting order:', err);
+        alert('Failed to delete order');
+      }
+    });
   }
 }

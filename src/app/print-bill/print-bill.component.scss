@@ -5,7 +5,7 @@
   margin: 10mm auto; /* Center on screen with some margin */
   box-sizing: border-box;
   position: relative; /* All children positioned absolutely relative to this */
-  font-family: "Arial", sans-serif; /* Use a font similar to your pre-printed text */
+  font-family: sans-serif,"Arial"; /* Use a font similar to your pre-printed text */
   font-size: 10pt; /* Adjust font size to match pre-printed */
   line-height: 1.2;
   color: #000; /* Ensure text is black for printing */
@@ -15,17 +15,20 @@
   background-image: url(../../assets/image.png);
   background-repeat: no-repeat;
   background-size: cover;
+  letter-spacing: 1px;
 }
 
 /* Positioning for Header Data (Customer Info & Booking Details) */
 .header-data {
   position: absolute;
   top: 47mm;
-  left: -4mm;
-  width: 107mm;
+  left: -1mm;
+  width: 111mm;
   display: flex;
   justify-content: space-between;
   font-size: 11px;
+  // letter-spacing: 1px;
+  white-space: nowrap;
 }
 
 .customer-info-block {
@@ -88,7 +91,7 @@
   top: 76mm;
   left: 18mm;
   width: 105mm;
-  font-size: 8pt;
+  font-size: 9pt;
 }
 
 .items-table .table-row {

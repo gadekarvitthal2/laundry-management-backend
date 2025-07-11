@@ -8,7 +8,7 @@ import { RegistrationComponent } from './registration/registration.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from './services/auth.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { CustomerRegistrationComponent } from './customer-registration/customer-registration.component';
 import { CustomerDetailsComponent } from './customer-details/customer-details.component';
@@ -35,6 +35,7 @@ import { RollPressMasterComponent } from './roll-press-master/roll-press-master.
 import { MatSortModule } from '@angular/material/sort';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { UpdateCustomerComponent } from './update-customer/update-customer.component';
+import { LoaderInterceptor } from './interceptor/loader.interceptor';
 
 @NgModule({
   declarations: [
@@ -76,7 +77,13 @@ import { UpdateCustomerComponent } from './update-customer/update-customer.compo
     MatSortModule,
     DragDropModule
   ],
-  providers: [AuthService, DataService],
+  providers: [AuthService, DataService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoaderInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
