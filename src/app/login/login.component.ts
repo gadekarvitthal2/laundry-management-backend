@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
   selector: 'app-login',
   standalone: false,
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  styleUrl: './login.component.scss',
 })
 export class LoginComponent {
   email = '';
@@ -16,13 +16,15 @@ export class LoginComponent {
 
   login() {
     this.auth.login({ email: this.email, password: this.password }).subscribe({
-      next: res => {
-        console.log('res',res)
+      next: (res) => {
         alert(res.message);
-        localStorage.setItem('token', res.token);
+        localStorage.setItem('address', res.token);
+        localStorage.setItem('fullName', res.user.fullName);
+        localStorage.setItem('phone', res.user.phone);
+        localStorage.setItem('address', res.user.address);
         this.router.navigate(['/dashboard']);
       },
-      error: err => alert(err.error.message)
+      error: (err) => alert(err.error.message),
     });
   }
 }
