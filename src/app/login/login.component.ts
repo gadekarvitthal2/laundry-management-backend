@@ -17,6 +17,7 @@ export class LoginComponent {
   login() {
     this.auth.login({ email: this.email, password: this.password }).subscribe({
       next: res => {
+        console.log('res',res)
         alert(res.message);
         localStorage.setItem('token', res.token);
         this.router.navigate(['/dashboard']);

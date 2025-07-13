@@ -58,15 +58,15 @@
 
       <div class="booking-details-block">
         <div class="booking-line booking-no-line">
-          <span class="label"></span>
-          <span class="value" class="booking_value">{{ bill.booking_slip.booking_no }}</span>
+          <!-- <span class="label"></span> -->
+          <span class="value" style="font-size: 1.2em;"  class="value">{{ bill.booking_slip.booking_no }}</span>
         </div>
         <div class="booking-line booking-date-line">
-          <span class="label"></span>
-          <span class="value">{{ bill.booking_slip.booking_date | date:'dd/MM/yy, HH:mm' : '+0530' }}</span>
+          <!-- <span class="label"></span> -->
+          <span class="value">{{ bill.booking_slip.booking_date | date:'dd/MM/yy hh:mma' }}</span>
         </div>
         <div class="booking-line delivery-date-line">
-          <span class="label"></span>
+          <!-- <span class="label"></span> -->
           <span class="value">{{ bill.booking_slip.delivery_date }}</span>
         </div>
       </div>
@@ -145,12 +145,12 @@
 
       <!-- Center Column -->
       <div class="footer-extra-info-col center">
-        <div class="footer-row"><span class="footer-total-qty">Total Qty: {{ bill.footer_extra_info.total_qty }}</span>
+        <div class="footer-row"><span class="footer-total-qty">Total Qty: <span style="font-size: 1.2em;">{{ bill.footer_extra_info.total_qty }}</span></span>
         </div>
-        <div class="footer-row"><span class="footer-press">Roll Press: {{ bill.footer_extra_info.roll_press }}</span>
+        <div class="footer-row"><span class="footer-press">Roll Press: <span style="font-size: 1.2em;">{{ bill.footer_extra_info.roll_press }}</span></span>
         </div>
-        <div class="footer-row"><span class="footer-steam-press">Steam Press: {{ bill.footer_extra_info.steam_press
-            }}</span></div>
+        <div class="footer-row"><span class="footer-steam-press">Steam Press: <span style="font-size: 1.2em;">{{ bill.footer_extra_info.steam_press
+            }}</span></span></div>
       </div>
 
       <!-- Right Column -->

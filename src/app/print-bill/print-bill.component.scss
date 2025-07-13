@@ -23,7 +23,7 @@
   position: absolute;
   top: 47mm;
   left: -1mm;
-  width: 111mm;
+  width: 150mm;
   display: flex;
   justify-content: space-between;
   font-size: 11px;
@@ -55,6 +55,7 @@
   position: relative;
   left: 12mm; /* Adjust to align with the name above */
 }
+
 
 .booking-details-block {
   width: 35%; /* Adjusted width for booking details block */
@@ -271,6 +272,7 @@
     height: 210mm;
     padding: 0;
     overflow: hidden;
+    letter-spacing: 1px;
   }
   .action-buttons {
     display: none; /* Hide buttons when printing */

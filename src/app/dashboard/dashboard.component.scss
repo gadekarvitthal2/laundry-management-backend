@@ -82,45 +82,45 @@
 }
 
 //== header
-.logo-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    padding: 0;
-    margin: 0;
-    max-height: 82px;
-}
-
-.logo {
-  width: 150px;
+.header-container {
+  position: relative;
+  width: 100%;
   height: auto;
-  max-width: 100%;
-  object-fit: contain;
-  display: block;
-  animation: popBounce 0.8s ease-out;
-  border-radius: 0; // remove if not needed
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: transparent;
 
-  @media (max-width: 768px) {
-    width: 120px;
+  .image-left img {
+    height: 50px;
+    width: auto;
   }
 
-  @media (max-width: 480px) {
-    width: 100px;
-  }
-}
+  .image-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+    margin-top: 36px;
 
-// Pop-bounce entrance animation
-@keyframes popBounce {
-  0% {
-    transform: scale(0.6);
-    opacity: 0;
-  }
-  60% {
-    transform: scale(1.1);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1);
+    img {
+      // height: 90px; // Adjust for visibility 
+      width: auto;
+      max-width: 100%;
+      height: 301px;
+    }
+
+    @media (max-width: 768px) {
+      img {
+        height: 200px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      img {
+        height: 150px;
+      }
+    }
   }
 }

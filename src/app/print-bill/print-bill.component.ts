@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   Component,
   ElementRef,
   Input,
@@ -16,7 +17,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './print-bill.component.html',
   styleUrl: './print-bill.component.scss',
 })
-export class PrintBillComponent {
+export class PrintBillComponent implements AfterViewInit{
   billData: any;
   @ViewChildren('billContent') billContentRefs!: QueryList<ElementRef>;
   incomingCustomerId = '';
@@ -33,22 +34,36 @@ export class PrintBillComponent {
     },
   ];
   items: any[][] = [];
-billNumber: any;
-billDateAndTime: any;
+  billNumber: any;
+  billDateAndTime: any;
   customerId: any;
+  allorderData: any;
+  incomingOrderId: any;
   constructor(
     private dataService: DataService,
     private router: ActivatedRoute
   ) {
     this.router.queryParams.subscribe((params) => {
-      if (params['customerId']) {
-        this.customerId  = params['customerId'];
+      if (params['customerId']) {// this is for the normal after normal order new order
+        this.customerId = params['customerId'];
         this.incomingCustomerId = params['customerId'];
         this.finalOrder = params['orderData']
           ? JSON.parse(params['orderData'])
           : null;
       }
+      if (params['orderId']) {// This is for the print
+        this.incomingOrderId  = params['orderId'];
+      } else {
+        console.error('not getting the billNo');
+      }
     });
+  }
+  ngAfterViewInit(): void {
+    // if(this.incomingOrderId) { // it means it is coming from the view customer not new
+    //   setTimeout(() => {
+    //     this.printBill();
+    //   }, 2000);
+    // }
   }
 
   async ngOnInit(): Promise<void> {
@@ -197,12 +212,12 @@ billDateAndTime: any;
   }
 
   parseApiToBillData(apiResponse: any): any[] {
-    console.log('apiResponse',apiResponse)
+    console.log('apiResponse', apiResponse);
     const createdAt = new Date(apiResponse.createdAt);
     this.billDateAndTime = new Date(apiResponse.createdAt);
     const deliveryDate = new Date(apiResponse.deliveryDetails.date);
     const items = apiResponse.items;
-    this.billNumber = apiResponse.billNumber
+    this.billNumber = apiResponse.billNumber;
     // Map base item info
     const sampleItemData = items.map((item: any, index: number) => ({
       sr_no: index + 1,
@@ -267,7 +282,7 @@ billDateAndTime: any;
           roll_press: rollCount > 0 ? rollCount : '0',
           steam_press: steamCount > 0 ? steamCount : '0',
         },
-        _id:apiResponse._id
+        _id: apiResponse._id,
       };
     });
     return bills;
@@ -314,55 +329,56 @@ billDateAndTime: any;
     });
   }
 
-  placeOrder(): void {
-    this.dataService.createOrder(this.finalOrder).subscribe({
-      next: (response) => {
-        alert('Order placed successfully!');
-        this.isOrderPlaced = true; // Set the flag to true after successful order placement
-        // this.notifyCustomer(this.incomingCustomerId, this.finalOrder.items);
-      },
-      error: (error) => {
-        console.error('Error creating order:', error);
-      },
-    });
-  }
+  // placeOrder(): void {
+  //   this.dataService.createOrder(this.finalOrder).subscribe({
+  //     next: (response) => {
+  //       alert('Order placed successfully!');
+  //       this.isOrderPlaced = true; // Set the flag to true after successful order placement
+  //       // this.notifyCustomer(this.incomingCustomerId, this.finalOrder.items);
+  //     },
+  //     error: (error) => {
+  //       console.error('Error creating order:', error);
+  //     },
+  //   });
+  // }
 
-notifyCustomer(customerId: string, items: any[], phone: string): void {
-  let phoneNo = phone;
-  let fullName;
-  let deliveryDate = this.finalOrder?.deliveryDetails?.date;
+  notifyCustomer(customerId: string, items: any[], phone: string): void {
+    let phoneNo = phone;
+    let fullName;
+    let deliveryDate = this.finalOrder?.deliveryDetails?.date;
 
-  if (!customerId) {
-    alert('Customer ID is missing.');
-    return;
-  }
+    if (!customerId) {
+      alert('Customer ID is missing.');
+      return;
+    }
 
-  const customer = this.allConsumerList.find(
-    (consumer: any) => consumer._id === customerId
-  );
+    const customer = this.allConsumerList.find(
+      (consumer: any) => consumer._id === customerId
+    );
 
-  if (!customer) {
-    alert('Customer not found.');
-    return;
-  }
+    if (!customer) {
+      alert('Customer not found.');
+      return;
+    }
 
-  phoneNo = customer.phone || phone;
-  fullName = customer.fullName || 'Customer';
+    phoneNo = customer.phone || phone;
+    fullName = customer.fullName || 'Customer';
 
-  if (!items || items.length === 0) {
-    alert('Item list is empty.');
-    return;
-  }
+    if (!items || items.length === 0) {
+      alert('Item list is empty.');
+      return;
+    }
 
-  const itemDetails = items
-    .map((item, index) => `${index + 1}. ${item.productName}   ${item.quantity}`)
-    .join('\n');
+    const itemDetails = items
+      .map(
+        (item, index) => `${index + 1}. ${item.productName}   ${item.quantity}`
+      )
+      .join('\n');
 
-  const totalAmount = items.reduce((sum, item) => sum + item.amount, 0);
-  const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
+    const totalAmount = items.reduce((sum, item) => sum + item.amount, 0);
+    const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
 
-  const message = 
-`*Name:* ${fullName.toLocaleUpperCase()}
+    const message = `*Name:* ${fullName.toLocaleUpperCase()}
 *Bill.No:* ${this.removeLeadingZeros(this.billNumber)}
 *B.D:* ${this.formatDateWithOptionalTime(this.billDateAndTime)}
 *D.D:* ${this.formatDateWithOptionalTime(deliveryDate)}
@@ -378,88 +394,100 @@ ${itemDetails}
 Jay Drycleaners
 Please visit again.`;
 
-  const encodedMessage = encodeURIComponent(message);
-  const url = `https://wa.me/91${phoneNo}?text=${encodedMessage}`;
-  window.open(url, '_blank');
-}
-
-
-formatDateWithOptionalTime(input: string): string {
-  if (!input) return '';
-
-  let date: Date;
-
-  // Check if the string includes time (T or space with colon)
-  const hasTime = /[T\s]\d{2}:\d{2}/.test(input);
-
-  if (hasTime) {
-    // If time is present, parse normally
-    date = new Date(input);
-  } else {
-    // If only date is present, parse as local date (not UTC)
-    const [year, month, day] = input.split('-').map(Number);
-    date = new Date(year, month - 1, day); // month is 0-based
+    const encodedMessage = encodeURIComponent(message);
+    const url = `https://wa.me/91${phoneNo}?text=${encodedMessage}`;
+    window.open(url, '_blank');
   }
 
-  const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const year = String(date.getFullYear()).slice(-2);
+  formatDateWithOptionalTime(input: string): string {
+    if (!input) return '';
 
-  let formattedDate = `${day}/${month}/${year}`;
+    let date: Date;
 
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
+    // Check if the string includes time (T or space with colon)
+    const hasTime = /[T\s]\d{2}:\d{2}/.test(input);
 
-  if (hasTime && (hours !== 0 || minutes !== 0)) {
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    const displayHours = hours % 12 || 12;
-    const displayMinutes = String(minutes).padStart(2, '0');
-    formattedDate += ` ${String(displayHours).padStart(2, '0')}:${displayMinutes} ${ampm}`;
+    if (hasTime) {
+      // If time is present, parse normally
+      date = new Date(input);
+    } else {
+      // If only date is present, parse as local date (not UTC)
+      const [year, month, day] = input.split('-').map(Number);
+      date = new Date(year, month - 1, day); // month is 0-based
+    }
+
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = String(date.getFullYear()).slice(-2);
+
+    let formattedDate = `${day}/${month}/${year}`;
+
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+
+    if (hasTime && (hours !== 0 || minutes !== 0)) {
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      const displayHours = hours % 12 || 12;
+      const displayMinutes = String(minutes).padStart(2, '0');
+      formattedDate += ` ${String(displayHours).padStart(
+        2,
+        '0'
+      )}:${displayMinutes} ${ampm}`;
+    }
+
+    return formattedDate;
   }
 
-  return formattedDate;
-}
-
-removeLeadingZeros(value: string): string {
-  return String(Number(value));
-}
-
-copyOrderMessage(): void {
-  const items = this.finalOrder?.items || [];
-
-  if (!items.length) {
-    alert('Item list is empty.');
-    return;
+  removeLeadingZeros(value: string): string {
+    return String(Number(value));
   }
 
-  const customerId = this.finalOrder?.customerId;
-  const customer = this.allConsumerList?.find(
-    (consumer: any) => consumer._id === customerId
-  );
+  copyOrderMessage(): void {
+    const items = this.finalOrder?.items || [];
 
-  const fullName = customer?.fullName
-    ? this.dataService.toTitleCase(customer.fullName)
-    : 'Customer';
+    if (!items.length) {
+      alert('Item list is empty.');
+      return;
+    }
 
-  const billNumber = this.removeLeadingZeros(this.billNumber || '');
-  const bookingDate = this.formatDateWithOptionalTime(this.billDateAndTime);
-  const deliveryDate = this.formatDateWithOptionalTime(this.finalOrder?.deliveryDetails?.date);
-  const address = customer?.address || 'No Address';
+    const customerId = this.finalOrder?.customerId;
+    const customer = this.allConsumerList?.find(
+      (consumer: any) => consumer._id === customerId
+    );
 
-  const maxNameLength = Math.max(...items.map((item: any) => item.productName.length), 12);
+    const fullName = customer?.fullName
+      ? this.dataService.toTitleCase(customer.fullName)
+      : 'Customer';
 
-  const itemDetails = items
-    .map((item: any, index: number) => {
-      const paddedName = item.productName.padEnd(maxNameLength + 2, ' ');
-      return `${index + 1}. ${paddedName}${item.quantity}`;
-    })
-    .join('\n');
+    const billNumber = this.removeLeadingZeros(this.billNumber || '');
+    const bookingDate = this.formatDateWithOptionalTime(this.billDateAndTime);
+    const deliveryDate = this.formatDateWithOptionalTime(
+      this.finalOrder?.deliveryDetails?.date
+    );
+    const address = customer?.address || 'No Address';
 
-  const totalAmount = items.reduce((sum: number, item: any) => sum + item.amount, 0);
-  const totalQuantity = items.reduce((sum: number, item: any) => sum + item.quantity, 0);
+    const maxNameLength = Math.max(
+      ...items.map((item: any) => item.productName.length),
+      12
+    );
 
-  const message =
-`*Name:* ${fullName.toLocaleUpperCase()}
+    const itemDetails = items
+      .map((item: any, index: number) => {
+        const paddedName = item.productName.padEnd(maxNameLength + 2, ' ');
+        return `${index + 1}. ${paddedName}${item.quantity}`;
+      })
+      .join('\n');
+
+    const totalAmount = items.reduce(
+      (sum: number, item: any) => sum + item.amount,
+      0
+    );
+    const totalQuantity = items.reduce(
+      (sum: number, item: any) => sum + item.quantity,
+      0
+    );
+
+    const message = `*Name:* ${fullName.toLocaleUpperCase()}
 *Bill.No:* ${billNumber}
 *B.D:* ${bookingDate}
 *D.D:* ${deliveryDate}
@@ -475,11 +503,11 @@ ${itemDetails}
 Jay Drycleaners
 Please visit again.`;
 
-  navigator.clipboard.writeText(message).then(
-    () => alert('Message copied to clipboard!'),
-    (err) => alert('Failed to copy message: ' + err)
-  );
-}
+    navigator.clipboard.writeText(message).then(
+      () => alert('Message copied to clipboard!'),
+      (err) => alert('Failed to copy message: ' + err)
+    );
+  }
 
   getAllCustomers() {
     return new Promise<void>((resolve, reject) => {
@@ -487,7 +515,7 @@ Please visit again.`;
       this.dataService.getAllCustomers().subscribe({
         next: (data: any) => {
           this.allConsumerList = data || [];
-          console.log('this.allConsumerList',this.allConsumerList)
+          console.log('this.allConsumerList', this.allConsumerList);
           resolve();
         },
         error: (err) => {
@@ -502,12 +530,22 @@ Please visit again.`;
     return new Promise<void>((resolve, reject) => {
       this.dataService.getOrdersByCustomer(this.incomingCustomerId).subscribe({
         next: (response) => {
-          const customerdata = response[0];
-          console.log('response[0]',response[0])
-          this.billData = this.parseApiToBillData(customerdata);
-
           resolve();
-          if (customerdata) {
+          this.allorderData = response;
+          console.log('response[0]', response[0]);
+          if (this.incomingCustomerId) {
+            this.billData = this.parseApiToBillData(response[0]);
+          } else if (this.incomingOrderId) {
+            const order = this.allorderData.find(
+              (obj: any) => obj._id == this.incomingOrderId
+            );
+            console.log('order ',order);
+            console.log('billNumber  ',order.billNumber);
+            this.billData = this.parseApiToBillData(order);
+            // this.printBill()
+          } else {
+          }
+          if (this.allorderData[0].length > 0) {
           } else {
             reject('Customer not found');
             console.error(
@@ -528,7 +566,7 @@ Please visit again.`;
     return result;
   }
 
-    deliveredMessageUpdateMessage(element: any) {
+  deliveredMessageUpdateMessage(element: any) {
     this.dataService
       .notifyUpdateDeliveryDate(
         String(this.customerId),

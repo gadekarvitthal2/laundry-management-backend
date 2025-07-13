@@ -23,6 +23,7 @@ export class ViewCustomerDetailComponent {
     'whatspp_delivered_date',
     'placeOrderNotify',
     'whatspp_delivery_notify',
+    'print_bill',
     'action',
   ];
   isDeliveryMessageSent = '';
@@ -30,7 +31,7 @@ export class ViewCustomerDetailComponent {
     private router: ActivatedRoute,
     private dataService: DataService,
     private dialog: MatDialog,
-    private routerNew:Router
+    private routerNew: Router
   ) {
     this.router.queryParams.subscribe((params: any) => {
       this.customerId = params['customerId'];
@@ -113,54 +114,58 @@ export class ViewCustomerDetailComponent {
       element.customerId.phone
     );
   }
-notifyCustomer(customerId: string, element?: any, phone?: string): void {
-  const items: any[] = Array.isArray(element?.items) ? element.items : [];
+  notifyCustomer(customerId: string, element?: any, phone?: string): void {
+    const items: any[] = Array.isArray(element?.items) ? element.items : [];
 
-  if (!customerId) {
-    alert('Customer ID is missing.');
-    return;
-  }
+    if (!customerId) {
+      alert('Customer ID is missing.');
+      return;
+    }
 
-  const customer = this.allConsumerList.find(
-    (consumer: any) => consumer._id === customerId
-  );
+    const customer = this.allConsumerList.find(
+      (consumer: any) => consumer._id === customerId
+    );
 
-  if (!customer) {
-    alert('Customer not found.');
-    return;
-  }
+    if (!customer) {
+      alert('Customer not found.');
+      return;
+    }
 
-  const phoneNo = customer.phone || phone || '';
-  const address = customer.address || 'No Address';
-  const fullName = this.dataService?.toTitleCase(customer.fullName || 'Customer');
-  const billNumber = this.removeLeadingZeros(element?.billNumber || '');
-  const bookingDate = this.formatDateWithOptionalTime(element.createdAt);
-  const deliveryDate = this.formatDateWithRemoveTime(element?.deliveryDetails?.date);
+    const phoneNo = customer.phone || phone || '';
+    const address = customer.address || 'No Address';
+    const fullName = this.dataService?.toTitleCase(
+      customer.fullName || 'Customer'
+    );
+    const billNumber = this.removeLeadingZeros(element?.billNumber || '');
+    const bookingDate = this.formatDateWithOptionalTime(element.createdAt);
+    const deliveryDate = this.formatDateWithRemoveTime(
+      element?.deliveryDetails?.date
+    );
 
-  if (!items.length) {
-    alert('Item list is empty.');
-    return;
-  }
+    if (!items.length) {
+      alert('Item list is empty.');
+      return;
+    }
 
-  const maxNameLength = Math.max(
-    ...items.map((item) => item.productName.length),
-    12
-  );
+    const maxNameLength = Math.max(
+      ...items.map((item) => item.productName.length),
+      12
+    );
 
-  const itemDetails = items
-    .map((item, index) => {
-      const paddedName = item.productName.padEnd(maxNameLength + 2, ' ');
-      return `${index + 1}. ${paddedName}${item.quantity}`;
-    })
-    .join('\n');
+    const itemDetails = items
+      .map((item, index) => {
+        const paddedName = item.productName.padEnd(maxNameLength + 2, ' ');
+        return `${index + 1}. ${paddedName}${item.quantity}`;
+      })
+      .join('\n');
 
-  const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
-  const totalAmount = items.reduce(
-    (sum, item) => sum + item.unitPrice * item.quantity,
-    0
-  );
+    const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
+    const totalAmount = items.reduce(
+      (sum, item) => sum + item.unitPrice * item.quantity,
+      0
+    );
 
-  const message = `*Name:* ${fullName.toLocaleUpperCase()}
+    const message = `*Name:* ${fullName.toLocaleUpperCase()}
 *Bill.No:* ${billNumber}
 *B.D:* ${bookingDate}
 *D.D:* ${deliveryDate}
@@ -176,11 +181,10 @@ ${itemDetails}
 Jay Drycleaners
 Please visit again.`;
 
-  const encodedMessage = encodeURIComponent(message);
-  const url = `https://wa.me/91${phoneNo}?text=${encodedMessage}`;
-  window.open(url, '_blank');
-}
-
+    const encodedMessage = encodeURIComponent(message);
+    const url = `https://wa.me/91${phoneNo}?text=${encodedMessage}`;
+    window.open(url, '_blank');
+  }
 
   removeLeadingZeros(value: string): string {
     return String(Number(value));
@@ -334,40 +338,56 @@ Please visit again.`;
     return `${dd}/${mm}/${yy}`;
   }
 
-  DeliveryMessageSent(order: any): void {
+DeliveryMessageSent(order: any): void {
+  console.log('order', order);
 
-     this.dataService
-      .notifyUpdateDeliveryDateIfOrderComplete(
-        String(this.customerId),
-        new Date().toISOString(),
-        order._id
-      )
-      .subscribe(
-        (response) => {},
-        (error) => {
-          console.error('Error updating delivery date:', error);
-        }
-      );
+  this.dataService
+    .notifyUpdateDeliveryDateIfOrderComplete(
+      String(order.customerId?._id || order.customerId),
+      new Date().toISOString(),
+      order._id
+    )
+    .subscribe(
+      (response) => {},
+      (error) => {
+        console.error('Error updating delivery date:', error);
+      }
+    );
 
-    const phoneNo = order.customerId.phone;
-    if (!phoneNo) {
-      alert('Phone number is missing.');
-      return;
-    }
-    const message = `*Your order has been delivered.*\n\nThank you!\nJay Drycleaners\nPlease visit again.`;
-    const encodedMessage = encodeURIComponent(message);
-    const url = `https://wa.me/91${phoneNo}?text=${encodedMessage}`; // Add country code explicitly
-    window.open(url, '_blank');
+  const phoneNo = order.customerId?.phone || order.phone;
+  if (!phoneNo) {
+    alert('Phone number is missing.');
+    return;
   }
 
+  // Format dates as dd/MM/yy
+   const formattedBookingDate = this.formatDateWithOptionalTime(order.createdAt);
+    const formattedDeliveryDate = this.formatDateWithRemoveTime(
+      order.deliveryDetails?.date
+    );
+  // Construct WhatsApp message
+  const fullName = order.customerId?.fullName || order.fullName || 'Customer';
+  const billNumber = order.billNumber || 'N/A';
+
+  const message = `*Your order has been delivered.*\n\n` +
+    `*Name:* ${fullName.toLocaleUpperCase()}\n` +
+    `*Bill.No:* ${billNumber}\n` +
+    `*B.D:* ${formattedBookingDate}\n` +
+    `Thank you!\nJay Drycleaners\nPlease visit again.`;
+
+  const encodedMessage = encodeURIComponent(message);
+  const url = `https://wa.me/91${phoneNo}?text=${encodedMessage}`;
+  window.open(url, '_blank');
+}
+
   editOrder(data: any) {
-    console.log('data',data._id);
-     this.routerNew.navigate(['/customer-registration'], {
+    console.log('data', data._id);
+    this.routerNew.navigate(['/customer-registration'], {
       queryParams: { orderId: data._id },
     });
   }
 
-deleteOrder(orderId: string) {
+  deleteOrder(orderId: string) {
     if (!confirm('Are you sure you want to delete this order?')) return;
 
     this.dataService.deleteOrderById(orderId).subscribe({
@@ -378,7 +398,18 @@ deleteOrder(orderId: string) {
       error: (err) => {
         console.error('Error deleting order:', err);
         alert('Failed to delete order');
-      }
+      },
+    });
+  }
+
+  printBill(order: any) {
+    console.log('orderId',order)
+    this.routerNew.navigate(['/print-bill'], {
+      queryParams: {
+        orderId: order._id,
+        customerId: this.customerId,
+        // orderData: JSON.stringify(finalOrder),
+      },
     });
   }
 }

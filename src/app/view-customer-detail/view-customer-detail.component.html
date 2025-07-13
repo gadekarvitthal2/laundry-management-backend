@@ -65,12 +65,21 @@
         </td>
       </ng-container>
 
-      <!-- Notify Customer -->
       <!-- Delivert Date Column -->
       <ng-container matColumnDef="whatspp_delivery_notify">
         <th mat-header-cell *matHeaderCellDef>Notify Delivery</th>
         <td mat-cell *matCellDef="let order">
           <i style="cursor: pointer;" (click)="DeliveryMessageSent(order)" class="material-icons">send</i>
+        </td>
+      </ng-container>
+
+      <!-- Print -->
+      <ng-container matColumnDef="print_bill">
+        <th mat-header-cell *matHeaderCellDef>Print Bill</th>
+        <td mat-cell *matCellDef="let order">
+          <i class="material-icons" style="cursor: pointer;" (click)="printBill(order)" title="Print Bill">
+            print
+          </i>
         </td>
       </ng-container>
 
