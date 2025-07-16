@@ -44,7 +44,8 @@ export class PrintBillComponent implements AfterViewInit{
     private router: ActivatedRoute
   ) {
     this.router.queryParams.subscribe((params) => {
-      if (params['customerId']) {// this is for the normal after normal order new order
+      console.log('params', params);
+      if (params['customerId'] && !params['orderId']) {// this is for the normal after normal order new order
         this.customerId = params['customerId'];
         this.incomingCustomerId = params['customerId'];
         this.finalOrder = params['orderData']
@@ -52,6 +53,8 @@ export class PrintBillComponent implements AfterViewInit{
           : null;
       }
       if (params['orderId']) {// This is for the print
+        this.customerId = params['customerId'];
+        this.incomingCustomerId = params['customerId'];
         this.incomingOrderId  = params['orderId'];
       } else {
         console.error('not getting the billNo');
@@ -533,7 +536,7 @@ Please visit again.`;
           resolve();
           this.allorderData = response;
           console.log('response[0]', response[0]);
-          if (this.incomingCustomerId) {
+          if (this.incomingCustomerId && !this.incomingOrderId) {
             this.billData = this.parseApiToBillData(response[0]);
           } else if (this.incomingOrderId) {
             const order = this.allorderData.find(

@@ -34,7 +34,7 @@ export class CustomerDetailsComponent implements OnInit {
     // 'createdAt',
     'bookingDate',
     // 'Amount',
-    'placeOrderAt',
+    // 'placeOrderAt',
     // 'notifyCustomer',
     'actions',
   ];

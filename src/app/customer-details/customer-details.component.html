@@ -68,12 +68,12 @@
             </ng-container>
 
             <!-- Place Order At Column with mat button -->
-            <ng-container matColumnDef="placeOrderAt">
+            <!-- <ng-container matColumnDef="placeOrderAt">
                 <th mat-header-cell *matHeaderCellDef>Place Order At</th>
                 <td mat-cell *matCellDef="let element">
                     <button mat-button (click)="placeOrder(element._id)">Place new Order</button>
                 </td>
-            </ng-container>
+            </ng-container> -->
 
             <!-- Actions Column -->
             <ng-container matColumnDef="actions">
@@ -82,9 +82,9 @@
                     <button mat-button (click)="viewData(element._id)">
                         <i class="material-icons">visibility</i>
                     </button>
-                    <button mat-button (click)="copyDeliveryMessage()" title="Copy Message">
+                    <!-- <button mat-button (click)="copyDeliveryMessage()" title="Copy Message">
                         <i class="material-icons">content_copy</i>
-                    </button>
+                    </button> -->
                     <button mat-button (click)="openEditDialog(element)" title="Edit Delivery">
                         <i class="material-icons">edit</i>
                     </button>
