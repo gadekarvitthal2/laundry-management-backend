@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../services/data.service';
 import { MatDialog } from '@angular/material/dialog';
 import { OrderSummaryComponent } from '../order-summary/order-summary.component';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-view-customer-detail',
@@ -12,7 +13,7 @@ import { OrderSummaryComponent } from '../order-summary/order-summary.component'
 })
 export class ViewCustomerDetailComponent {
   customerId: string | null = null;
-  ordersData: any[] = [];
+  ordersData: MatTableDataSource<any> = new MatTableDataSource();
   allConsumerList: any[] = [];
   displayedColumns: string[] = [
     'billNumber',
@@ -54,13 +55,13 @@ export class ViewCustomerDetailComponent {
         .getOrdersByCustomer(String(this.customerId))
         .subscribe((orders: any[]) => {
           resolve(orders);
-          this.ordersData = orders.map((order) => ({
+          this.ordersData = new MatTableDataSource(orders.map((order) => ({
             ...order,
             fullName: order.customerId.fullName,
             address: order.customerId.address,
             phone: order.customerId.phone,
             isDelivered: order.isDelivered,
-          }));
+          })));
         });
     });
   }
@@ -393,7 +394,7 @@ DeliveryMessageSent(order: any): void {
     this.dataService.deleteOrderById(orderId).subscribe({
       next: (res: any) => {
         alert('Order deleted successfully');
-        // this.allConsumerList = this.allConsumerList.filter(order => order._id !== orderId);
+        window.location.reload();
       },
       error: (err) => {
         console.error('Error deleting order:', err);
