@@ -19,6 +19,9 @@
             <mat-label>Search Customers</mat-label>
             <input matInput (keyup)="applyFilter($event)" placeholder="Search by any field">
         </mat-form-field>
+        <div>
+            <button class="bg-blue-500 text-white rounded-lg px-4 py-2" (click)="exportToExcel()">Export to Excel</button>
+        </div>
     </div>
 
     <!-- Scrollable table wrapper -->
@@ -78,7 +81,7 @@
             <!-- Actions Column -->
             <ng-container matColumnDef="actions">
                 <th class="text-center" mat-header-cell *matHeaderCellDef>Actions</th>
-                <td mat-cell *matCellDef="let element" >
+                <td mat-cell *matCellDef="let element">
                     <button mat-button (click)="viewData(element._id)">
                         <i class="material-icons">visibility</i>
                     </button>

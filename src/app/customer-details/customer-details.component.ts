@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { UpdateCustomerComponent } from '../update-customer/update-customer.component';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-customer-details',
@@ -93,23 +94,22 @@ export class CustomerDetailsComponent implements OnInit {
     this.notifyCustomer(phone);
   }
 
-// component.ts
-confirmDelete(data: any) {
-  console.log('data',data)
-  if (confirm('Are you sure you want to delete this customer?')) {
-    this.dataService.deleteCustomerById(data._id).subscribe({
-      next: () => {
-        alert('Customer deleted successfully');
-        this.getAllCustomers(); // refresh list
-      },
-      error: (err) => {
-        console.error('Delete failed:', err);
-        alert('Failed to delete customer');
-      }
-    });
+  // component.ts
+  confirmDelete(data: any) {
+    console.log('data', data);
+    if (confirm('Are you sure you want to delete this customer?')) {
+      this.dataService.deleteCustomerById(data._id).subscribe({
+        next: () => {
+          alert('Customer deleted successfully');
+          this.getAllCustomers(); // refresh list
+        },
+        error: (err) => {
+          console.error('Delete failed:', err);
+          alert('Failed to delete customer');
+        },
+      });
+    }
   }
-}
-
 
   notifyCustomer(phoneNo: string): void {
     if (!phoneNo) {
@@ -149,5 +149,12 @@ confirmDelete(data: any) {
         this.getAllCustomers();
       }
     });
+  }
+
+  exportToExcel(): void {
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.customers);
+    const workbook: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Customers');
+    XLSX.writeFile(workbook, 'customers.xlsx');
   }
 }
