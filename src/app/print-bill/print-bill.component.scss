@@ -5,14 +5,15 @@
   margin: 10mm auto; /* Center on screen with some margin */
   box-sizing: border-box;
   position: relative; /* All children positioned absolutely relative to this */
-  font-family: sans-serif,"Arial"; /* Use a font similar to your pre-printed text */
+  font-family: sans-serif, "Arial"; /* Use a font similar to your pre-printed text */
   font-size: 10pt; /* Adjust font size to match pre-printed */
   line-height: 1.2;
   color: #000; /* Ensure text is black for printing */
   /* Optional: Add a border for visual reference on screen, remove for print */
   border: 1px solid #ccc;
   overflow: hidden; /* Prevent content from spilling outside */
-  background-image: url(../../assets/image.png);
+  // background-image: url(../../assets/image.png);
+  background-image: url(../../../public/jay_print.jpg);
   background-repeat: no-repeat;
   background-size: cover;
   letter-spacing: 1px;
@@ -21,8 +22,8 @@
 /* Positioning for Header Data (Customer Info & Booking Details) */
 .header-data {
   position: absolute;
-  top: 47mm;
-  left: -1mm;
+  top: 49mm;
+  left: 2mm;
   width: 150mm;
   display: flex;
   justify-content: space-between;
@@ -56,7 +57,6 @@
   left: 12mm; /* Adjust to align with the name above */
 }
 
-
 .booking-details-block {
   width: 35%; /* Adjusted width for booking details block */
   position: absolute; /* Re-position absolutely within .header-data */
@@ -89,7 +89,8 @@
 /* Items Table Styling */
 .items-table {
   position: absolute;
-  top: 76mm;
+  // top: 76mm;
+  top: 78mm;
   left: 18mm;
   width: 105mm;
   font-size: 9pt;
@@ -124,7 +125,8 @@
 /* Summary Section Styling */
 .total-qty-line {
   position: absolute;
-  top: 134mm;
+  // top: 134mm;
+  top: 137mm;
   right: 108mm;
   width: 42mm;
   text-align: right;
@@ -132,12 +134,19 @@
 }
 
 .summary-data {
+  // position: absolute;
+  // top: 136mm;
+  // right: 26mm;
+  // width: 42mm;
+  // text-align: right;
+  // margin: 4px 0px;
+  // font-size: 9pt;
   position: absolute;
-  top: 136mm;
+  top: 146mm;
   right: 26mm;
   width: 42mm;
   text-align: right;
-  margin: 4px 0px;
+  margin: -12px 0px;
   font-size: 9pt;
 }
 
@@ -273,6 +282,41 @@
     padding: 0;
     overflow: hidden;
     letter-spacing: 1px;
+  }
+  .header-data {
+    position: absolute;
+    top: 45mm;
+    left: 2mm;
+    width: 150mm;
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    // letter-spacing: 1px;
+    white-space: nowrap;
+  }
+  .items-table {
+    position: absolute;
+    top: 76mm;
+    left: 18mm;
+    width: 105mm;
+    font-size: 9pt;
+  }
+  .summary-data {
+    position: absolute;
+    top: 134mm;
+    right: 26mm;
+    width: 42mm;
+    text-align: right;
+    margin: 4px 0px;
+    font-size: 9pt;
+  }
+  .total-qty-line {
+    position: absolute;
+    top: 134mm;
+    right: 108mm;
+    width: 42mm;
+    text-align: right;
+    margin: 8px 0px;
   }
   .action-buttons {
     display: none; /* Hide buttons when printing */
