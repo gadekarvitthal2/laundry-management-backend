@@ -272,6 +272,21 @@
   background-color: #0056b3;
 }
 
+  .booking-date-line {
+    font-weight: bold;
+  }
+  .delivery-date-line {
+    font-weight: bold;
+  }
+
+  .footer-time {
+    font-weight: bold; /* Make footer time bold */
+  }
+
+  .footer-date {
+    font-weight: bold; /* Make footer date bold */
+  }
+
 /* Print specific styles */
 @media print {
   body {
@@ -328,15 +343,6 @@
   .action-buttons {
     display: none; /* Hide buttons when printing */
   }
-
-  .footer-extra-info-col.right .footer-time{
-    font-weight: bold; /* Make footer time bold */
-  }
-
-  .footer-extra-info-col.right .footer-date{
-   font-weight: bold; /* Make footer date bold */
-  }
-  
 
   /* REMOVE BROWSER HEADERS/FOOTERS */
   @page {
