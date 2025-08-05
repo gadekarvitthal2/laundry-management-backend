@@ -61,11 +61,11 @@
           <!-- <span class="label"></span> -->
           <span class="value" style="font-size: 1.2em;"  class="value">{{ bill.booking_slip.booking_no }}</span>
         </div>
-        <div class="booking-line booking-date-line">
+        <div class="booking-line booking-date-line fw-bold">
           <!-- <span class="label"></span> -->
           <span class="value">{{ bill.booking_slip.booking_date | date:'dd/MM/yy hh:mma' }}</span>
         </div>
-        <div class="booking-line delivery-date-line">
+        <div class="booking-line delivery-date-line fw-bold">
           <!-- <span class="label"></span> -->
           <span class="value">{{ bill.booking_slip.delivery_date }}</span>
         </div>
@@ -156,8 +156,8 @@
       <!-- Right Column -->
       <div class="footer-extra-info-col right">
         <div class="footer-row"><span class="footer-booking-no">{{ bill.footer_extra_info.booking_no }}</span></div>
-        <div class="footer-row"><span class="footer-time">{{ bill.footer_extra_info.time }}</span></div>
-        <div class="footer-row"><span class="footer-date">{{ bill.footer_extra_info.date }}</span></div>
+        <div class="footer-row"><span class="footer-time fw-bold">{{ bill.footer_extra_info.time | date:'dd/MM/yy hh:mma'  }}</span></div>
+        <div class="footer-row"><span class="footer-date fw-bold">{{ bill.footer_extra_info.date }}</span></div>
       </div>
     </div>
   </div>

@@ -279,7 +279,7 @@ export class PrintBillComponent implements AfterViewInit{
           address: apiResponse.customerId.address,
           customer_name: apiResponse.customerId.fullName,
           booking_no: `WC/${apiResponse.billNumber}`,
-          time: createdAt.toTimeString().split(' ')[0],
+          time: createdAt,
           date: createdAt.toLocaleDateString('en-GB'),
           total_qty: batchTotalQty,
           roll_press: rollCount > 0 ? rollCount : '0',

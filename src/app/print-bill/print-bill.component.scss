@@ -23,15 +23,22 @@
 .header-data {
   position: absolute;
   top: 49mm;
-  left: 2mm;
+  left: 4mm;
   width: 150mm;
   display: flex;
   justify-content: space-between;
-  font-size: 11px;
+  font-size: 9pt;
   // letter-spacing: 1px;
   white-space: nowrap;
 }
 
+.header-data .customer-name {
+  font-weight: bold; /* Make customer name bold */
+}
+
+.footer-customer-name {
+  font-weight: bold; /* Make footer customer name bold */
+}
 .customer-info-block {
   width: 60%; /* Adjusted width for customer info block */
 }
@@ -119,7 +126,7 @@
 .qty-col {
   width: 15mm; /* ADJUST: Width for Qty column and "Nos." */
   text-align: right;
-  font-size: 9pt; /* Adjust if needed */
+  font-size: 11pt; /* Adjust if needed */
 }
 
 /* Summary Section Styling */
@@ -286,11 +293,11 @@
   .header-data {
     position: absolute;
     top: 45mm;
-    left: 2mm;
+    left: 4mm;
     width: 150mm;
     display: flex;
     justify-content: space-between;
-    font-size: 11px;
+    font-size: 9pt;
     // letter-spacing: 1px;
     white-space: nowrap;
   }
@@ -321,6 +328,15 @@
   .action-buttons {
     display: none; /* Hide buttons when printing */
   }
+
+  .footer-extra-info-col.right .footer-time{
+    font-weight: bold; /* Make footer time bold */
+  }
+
+  .footer-extra-info-col.right .footer-date{
+   font-weight: bold; /* Make footer date bold */
+  }
+  
 
   /* REMOVE BROWSER HEADERS/FOOTERS */
   @page {
